@@ -9,12 +9,22 @@
     :round="appearance === 'icon'"
     :target="target"
     :href="href"
+    :type="type"
+    :class="`appearance-${appearance}`"
+    no-caps
     @click="emit('click')"
   >
     <!-- Tooltip -->
     <q-tooltip v-if="tooltip">{{ tooltip }}</q-tooltip>
   </q-btn>
 </template>
+
+<style lang="scss" scoped>
+.appearance-link {
+  text-decoration: underline;
+  font-weight: normal;
+}
+</style>
 
 <script setup lang="ts">
 /** Defines the properties of this component */
@@ -35,6 +45,8 @@ defineProps<{
   href?: string;
   /** A toolip for the button */
   tooltip?: string;
+  /** The type of the button */
+  type?: 'button' | 'submit' | 'reset';
 }>();
 
 /** Defines the events that can be emitted by this component */

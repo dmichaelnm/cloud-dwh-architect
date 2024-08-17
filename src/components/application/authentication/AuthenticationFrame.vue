@@ -125,7 +125,7 @@ import AppSelect from 'components/common/AppSelect.vue';
 const cmp = useCommonComposables();
 
 // The currently selected language value
-const language = ref('');
+const language = ref(ELanguage.enUS);
 
 /** Defines the properties of this component. */
 defineProps<{
@@ -133,18 +133,26 @@ defineProps<{
   message: string;
 }>();
 
+/** Defines the events that can be emitted by this component */
+const emit = defineEmits<{
+  // Language has changed event
+  (event: 'language-changed', language: ELanguage): void;
+}>();
+
 /** Lifecycle method that is called before this component is mounted */
 onBeforeMount(() => {
   // Set the dark mode from the cookie
   cmp.quasar.dark.set(cmp.quasar.cookies.get('dark') === 'true');
   // Get the language
-  language.value = cmp.quasar.cookies.get('language');
+  let lang = cmp.quasar.cookies.get('language');
   // If there is no language cookie, get the browser default
-  language.value = language.value ? language.value : navigator.language;
+  lang = lang ? lang : navigator.language;
   // Check, if the language is supported
-  if(!languageOptions.some(opt => opt.value === language.value)) {
+  if (!languageOptions.some((opt) => opt.value === lang)) {
     // If not, use English (US) as default
     language.value = ELanguage.enUS;
+  } else {
+    language.value = lang as ELanguage;
   }
   // Set the language
   switchLanguage();
@@ -170,5 +178,7 @@ function switchLanguage(): void {
   cmp.i18n.locale.value = language.value;
   // Set the cookie for the language
   cmp.quasar.cookies.set('language', language.value, { expires: 365 });
+  // Emit event
+  emit('language-changed', language.value);
 }
 </script>
