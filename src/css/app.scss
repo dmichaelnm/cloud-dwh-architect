@@ -1,2 +1,53 @@
 // app global css in SCSS form
 @import "quasar.variables";
+
+// ============================================================================
+// Default button color
+// ============================================================================
+
+.text-button {
+  color: $light-button !important;
+}
+
+.body--dark .text-button {
+  color: $dark-button !important;
+}
+
+.bg-button {
+  background-color: $light-button !important;
+}
+
+.body--dark .bg-button {
+  background-color: $dark-button !important;
+}
+
+// ============================================================================
+// Application wide default style properties
+// ============================================================================
+
+body {
+  background-color: $light-background-body;
+  color: $light-text-normal;
+}
+
+body.body--dark {
+  background-color: $dark-background-body;
+  color: $dark-text-normal;
+}
+
+// ============================================================================
+// Menu
+// ============================================================================
+
+.q-menu {
+  box-shadow: 4px 4px 8px 0 $shadow;
+}
+
+// ============================================================================
+// Footer
+// ============================================================================
+
+.footer {
+  background-color: transparent;
+  padding: 4px;
+}

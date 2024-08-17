@@ -23,3 +23,25 @@ $positive  : #21BA45;
 $negative  : #C10015;
 $info      : #31CCEC;
 $warning   : #F2C037;
+
+// Common colors
+
+$shadow                : rgba(0, 0, 0, 0.2);
+
+// Light mode colors
+
+$light-background-body : #E0E0E0;
+$light-background-frame: #F0F0F0;
+$light-text-normal     : #707070;
+$light-text-highlight  : #000000;
+$light-text-hint       : #909090;
+$light-button          : #707070;
+
+// Dark mode colors
+
+$dark-background-body  : #202020;
+$dark-background-frame : #303030;
+$dark-text-normal      : #909090;
+$dark-text-highlight   : #F0F0F0;
+$dark-text-hint        : #707070;
+$dark-button           : #909090;

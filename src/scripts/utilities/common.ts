@@ -3,6 +3,18 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 
 /**
+ * Represents a select option with a value, label, and optional icon.
+ */
+export type TSelectOption = {
+  /** The value of the option */
+  value: any;
+  /** The label of the option */
+  label: string;
+  /** An optional icon of the option */
+  icon?: string;
+};
+
+/**
  * Returns an object that contains common composable functions.
  *
  * @returns {Object} An object containing the following composable functions:
