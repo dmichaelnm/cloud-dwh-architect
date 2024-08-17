@@ -22,6 +22,26 @@
 }
 
 // ============================================================================
+// Social media button color
+// ============================================================================
+
+.text-smb {
+  color: $light-text-normal !important;
+}
+
+.body--dark .text-smb {
+  color: $dark-text-normal !important;
+}
+
+.bg-smb {
+  background-color: $light-text-normal !important;
+}
+
+.body--dark .bg-smb {
+  background-color: $dark-text-normal !important;
+}
+
+// ============================================================================
 // Application wide default style properties
 // ============================================================================
 
