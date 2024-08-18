@@ -9,12 +9,20 @@ export default {
     version: 'Version {major}.{minor}.{patch} (Build: {build})',
   },
 
-  // Common Buttons
+  // Common Buttons and Menu Items
   button: {
     // Back
     back: 'Back',
     // Close
     close: 'Close',
+    // Dark Mode
+    darkMode: 'Dark Mode',
+    // Language
+    language: 'Language',
+    // Light Mode
+    lightMode: 'Light Mode',
+    // Logout
+    logout: 'Log Out'
   },
 
   // Social Media Links

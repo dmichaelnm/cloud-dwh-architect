@@ -1,6 +1,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
+import { useSessionStore } from 'stores/session-store';
 
 /**
  * Represents a select option with a value, label, and optional icon.
@@ -28,16 +29,10 @@ export type TDialogButton = {
   color?: string;
   /** An optional icon for the button */
   icon?: string;
-}
+};
 
 /**
- * Returns an object that contains common composable functions.
- *
- * @returns {Object} An object containing the following composable functions:
- * - quasar: A function that provides access to Quasar composable functions.
- * - i18n: A function that provides access to I18n composable functions.
- * - route: A function that provides access to route composable functions.
- * - router: A function that provides access to router composable functions.
+ * Returns an object containing commonly used composable functions.
  */
 export function useCommonComposables() {
   return {
@@ -45,5 +40,6 @@ export function useCommonComposables() {
     i18n: useI18n(),
     route: useRoute(),
     router: useRouter(),
+    session: useSessionStore(),
   };
 }

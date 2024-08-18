@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { firebaseConfig } from 'src/scripts/config/firebase';
 
@@ -34,4 +34,14 @@ export function getCurrentAccountName(): string {
  */
 export async function sendResetPasswordEmail(email: string): Promise<void> {
   await sendPasswordResetEmail(firebaseAuth, email);
+}
+
+/**
+ * Signs out the current Firebase user.
+ *
+ * @return {Promise<void>} A promise that resolves when the user is successfully signed out.
+ */
+export async function logout(): Promise<void> {
+  // Signs out the current Firebase user
+  await signOut(firebaseAuth);
 }

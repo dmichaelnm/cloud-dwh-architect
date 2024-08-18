@@ -42,6 +42,26 @@
 }
 
 // ============================================================================
+// Tool button color
+// ============================================================================
+
+.text-toolbutton {
+  color: $light-button !important;
+}
+
+.body--dark .text-toolbutton {
+  color: $dark-button !important;
+}
+
+.bg-toolbutton {
+  background-color: $light-button !important;
+}
+
+.body--dark .bg-toolbutton {
+  background-color: $dark-button !important;
+}
+
+// ============================================================================
 // Application wide default style properties
 // ============================================================================
 
@@ -60,7 +80,28 @@ body.body--dark {
 // ============================================================================
 
 .q-menu {
+  border: 1px solid $light-frame;
   box-shadow: 4px 4px 8px 0 $shadow;
+  background-color: $light-background-frame;
+  color: $light-text-normal;
+}
+
+.body--dark .q-menu {
+  border: 1px solid $dark-frame;
+  background-color: $dark-background-frame;
+  color: $dark-text-normal;
+}
+
+// ============================================================================
+// Separator
+// ============================================================================
+
+.q-separator {
+  background-color: $light-frame;
+}
+
+.body--dark .q-separator {
+  background-color: $dark-frame;
 }
 
 // ============================================================================
@@ -70,4 +111,14 @@ body.body--dark {
 .footer {
   background-color: transparent;
   padding: 4px;
+}
+
+.footer-hint {
+  color: $light-text-hint;
+  font-size: 9pt;
+  padding: 0 16px;
+}
+
+.body--dark .footer-hint {
+  color: $dark-text-hint;
 }

@@ -17,6 +17,8 @@
   >
     <!-- Tooltip -->
     <q-tooltip v-if="tooltip">{{ tooltip }}</q-tooltip>
+    <!-- Default Slot -->
+    <slot />
   </q-btn>
 </template>
 
