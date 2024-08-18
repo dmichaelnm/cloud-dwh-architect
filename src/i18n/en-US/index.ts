@@ -116,8 +116,20 @@ export default {
     },
     // Reset Password Messages
     reset: {
+      // Reset Password Message
+      message: 'If you have forgotten your password or would like to reset it for any other reason, you can do so ' +
+        'here by entering your account email address in the field below. You will receive an email at the address ' +
+        'provided. This will contain a link to change your password.',
       // Reset Password Button
       button: 'Reset Password',
+      // Success Dialog Messages
+      dialog: {
+        // Title
+        title: 'Email successfully sent',
+        // Message
+        message: 'The email with the link to reset your password has been sent successfully. Please also check your ' +
+          'spam folder.'
+      }
     },
   },
 };

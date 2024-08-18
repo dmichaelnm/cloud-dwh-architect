@@ -118,8 +118,20 @@ export default {
     },
     // Reset Password Messages
     reset: {
+      // Reset Password Message
+      message: 'Falls Sie Ihr Kennwort vergessen haben oder aus anderen Gründen zurücksetzen möchten, können Sie ' +
+        'dies hier tun, indem Sie die Email-Adresse Ihres Kontos in das untenstehende Eingabefeld eintragen. Sie ' +
+        'erhalten eine Email an die angegebene Adresse. Diese enthält einen Link für das Ändern Ihres Kennworts.',
       // Reset Password Button
       button: 'Kennwort zurücksetzen',
+      // Success Dialog Messages
+      dialog: {
+        // Title
+        title: 'Email erfolgreich versendet',
+        // Message
+        message: 'Die Email mit dem Link zum Zurücksetzen des Kennworts wurde erfolgreich versendet. Überprüfen Sie ' +
+          'gegebenenfalls auch Ihren Spam-Ordner.'
+      }
     },
   },
 };

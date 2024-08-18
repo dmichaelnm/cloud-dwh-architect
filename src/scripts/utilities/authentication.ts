@@ -17,7 +17,7 @@ export function processFireabseError(
   t: (key: string) => string,
   error: unknown,
   emailError: Ref<string | null>,
-  passwordError: Ref<string | null>
+  passwordError: Ref<string | null> | null
 ): boolean {
   // Get the firebase error code
   const errorCode = (error as FirebaseError).code;
@@ -26,15 +26,18 @@ export function processFireabseError(
     emailError.value = t('authentication.error.invalidEmail');
     return true;
   }
-  if (errorCode === 'auth/weak-password') {
-    // Password is too weak
-    passwordError.value = t('authentication.error.weakPassword');
-    return true;
-  }
   if (errorCode === 'auth/email-already-in-use') {
     // Email address is already in use
     emailError.value = t('authentication.error.emailAlreadyInUse');
     return true;
+  }
+  if (passwordError != null) {
+    // A password error reference is provided
+    if (errorCode === 'auth/weak-password') {
+      // Password is too weak
+      passwordError.value = t('authentication.error.weakPassword');
+      return true;
+    }
   }
   // Error was not processed
   return false;

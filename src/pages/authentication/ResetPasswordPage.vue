@@ -1,14 +1,14 @@
 <template>
   <!-- Authentication Frame -->
   <authentication-frame
-    :message="$t('authentication.login.message')"
+    :message="$t('authentication.reset.message')"
     @language-changed="resetErrorMessages"
   >
     <!-- Form -->
     <q-form @submit="submit" greedy>
       <!-- Main DIV -->
       <div class="q-col-gutter-y-md">
-        <!-- Email / Password Row -->
+        <!-- Email Row -->
         <div class="row q-col-gutter-x-md">
           <!-- Email Column -->
           <div class="col">
@@ -22,49 +22,27 @@
               mandatory
             />
           </div>
-          <!-- Password Column -->
-          <div class="col">
-            <!-- Password Input -->
-            <app-input
-              ref="inputPassword"
-              v-model="password"
-              :label="$t('authentication.label.password')"
-              type="password"
-              :auto-focus="email !== '' && email !== null"
-              :error="passwordError"
-              mandatory
-            />
-          </div>
         </div>
-        <!-- Login Button Row -->
+        <!-- Reset Button Row -->
         <div class="row">
-          <!-- Login Button Column -->
+          <!-- Reset Button Column -->
           <div class="col text-center">
-            <!-- Login Button -->
+            <!-- Reset Button -->
             <app-button
-              :label="$t('authentication.login.button')"
+              :label="$t('authentication.reset.button')"
               type="submit"
             />
           </div>
         </div>
         <!-- Link Row -->
         <div class="row">
-          <!-- Register Account Column -->
-          <div class="col text-left">
-            <!-- Register Account Button -->
+          <!-- Link Column -->
+          <div class="col text-center">
+            <!-- Back Button -->
             <app-button
               appearance="link"
-              :label="$t('authentication.register.button')"
-              to="/authentication/register"
-            />
-          </div>
-          <!-- Reset Password Column -->
-          <div class="col text-right">
-            <!-- Reset Password Button -->
-            <app-button
-              appearance="link"
-              :label="$t('authentication.reset.button')"
-              to="/authentication/reset"
+              :label="$t('button.back')"
+              to="/authentication/login"
             />
           </div>
         </div>
@@ -79,44 +57,70 @@ import AppInput from 'components/common/AppInput.vue';
 import { onBeforeMount, ref } from 'vue';
 import AppButton from 'components/common/AppButton.vue';
 import { useCommonComposables } from 'src/scripts/utilities/common';
+import { useRunTask } from 'src/scripts/utilities/runTask';
+import { sendResetPasswordEmail } from 'src/scripts/utilities/firebase';
+import { processFireabseError } from 'src/scripts/utilities/authentication';
+import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
 
 // Get common composables
 const cmp = useCommonComposables();
+// Get run task composable
+const runTask = useRunTask();
+// Get message dialog composables
+const { showSuccessDialog } = useMessageDialog();
 
 // Email Input Reference
 const inputEmail = ref<typeof AppInput | null>(null);
-// Password Input Reference
-const inputPassword = ref<typeof AppInput | null>(null);
 
 // Email Address
 const email = ref<string | null>(null);
 // Email Address Error
 const emailError = ref<string | null>(null);
-// Password
-const password = ref<string | null>('');
-// Password Error
-const passwordError = ref<string | null>('');
 
 /** Lifecycle method that is called before this component is mounted */
 onBeforeMount(() => {
-  // Get email address from cookie
+  // Set email from cookie
   email.value = cmp.quasar.cookies.get('email');
 });
 
 /**
- * Resets the error messages for the email and password inputs.
+ * Resets the error messages for all input fields of this page.
  */
 function resetErrorMessages(): void {
-  // Reset email input error message
+  // Reset email error messages
   inputEmail.value?.resetValidation();
   emailError.value = null;
-  // Reset password input error message
-  inputPassword.value?.resetValidation();
-  passwordError.value = null;
 }
 
+/**
+ * This method is called when the user submits the form for resetting the password.
+ */
 function submit(): void {
-  // TODO to be implemented
-  console.log('submit');
+  // Reset error messages
+  resetErrorMessages();
+
+  // Run the task to reset the password.
+  runTask(
+    // Task handler
+    async () => {
+      // Send password reset mail
+      await sendResetPasswordEmail(email.value as string);
+      // Show success dialog
+      showSuccessDialog(
+        cmp.i18n.t('authentication.reset.dialog.title'),
+        cmp.i18n.t('authentication.reset.dialog.message'),
+        null,
+        () => {
+          // Return to login page
+          cmp.router.push({ path: '/authentication/login' });
+        }
+      );
+    },
+    // Error handler
+    (error) => {
+      // Process Firebase error
+      return processFireabseError(cmp.i18n.t, error, emailError, null);
+    }
+  );
 }
 </script>

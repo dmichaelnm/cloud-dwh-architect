@@ -202,6 +202,8 @@ function submit(): void {
         cmp.i18n.t('authentication.register.dialog.message'),
         null,
         () => {
+          // Set the email cookie
+          cmp.quasar.cookies.set('email', email.value as string, { expires: 365 });
           // Route to the login page
           cmp.router.push({ path: '/authentication/login' });
         }
