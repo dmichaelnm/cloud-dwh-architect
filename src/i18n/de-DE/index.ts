@@ -84,7 +84,13 @@ export default {
       // Password too weak
       weakPassword: 'Das Kennwort muss mindestens 6 Zeichen lang sein.',
       // Email is already in use
-      emailAlreadyInUse: 'Es existiert bereits ein Konto mit dieser Email-Adresse.'
+      emailAlreadyInUse: 'Es existiert bereits ein Konto mit dieser Email-Adresse.',
+      // Invalid credential
+      invalidCredential: 'Die Anmeldeinformationen sind nicht korrekt.',
+      // Too many failed attempts
+      tooManyFailedAttempts: 'Zu viele fehlgeschlagene Anmeldeversuche.',
+      // Account is locked
+      accountLocked: 'Das Konto ist gesperrt.'
     },
     // Login Page Messages
     login: {

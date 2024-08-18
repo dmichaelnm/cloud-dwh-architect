@@ -3,6 +3,8 @@ import * as fs from 'src/scripts/application/FSDocument';
 import { firebaseAuth } from 'src/scripts/utilities/firebase';
 import { ELanguage } from 'src/scripts/options/language';
 import { createDocument } from 'src/scripts/application/FSDocument';
+import { FirebaseError } from 'firebase/app';
+import { Timestamp } from 'firebase/firestore';
 
 /**
  * The structure of a data object of an Account document.
@@ -28,6 +30,8 @@ export interface IAccountData extends fs.IFSDocumentData {
   state: {
     /** The lock flag of the account */
     locked: boolean;
+    /** The timestamp of the last login */
+    lastLogin: Timestamp | null;
   };
 }
 
@@ -122,12 +126,49 @@ export async function createAccount(
     common: { name: `${firstName} ${lastName}`, description: null },
     profile: { firstName: firstName, lastName: lastName, email: email },
     preferences: { dark: dark, language: language },
-    state: { locked: true },
+    state: { locked: true, lastLogin: null },
   };
   // Create the account document
   return await createDocument<IAccountData, Account>(
     'account',
     data,
     credential.user.uid
+  );
+}
+
+/**
+ * Logs in a user with the provided email and password.
+ *
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @return {Promise<Account | undefined>} - A Promise that resolves with the user's account information.
+ */
+export async function login(email: string, password: string): Promise<Account> {
+  // Login to Firebase
+  const credential = await fa.signInWithEmailAndPassword(
+    firebaseAuth,
+    email,
+    password
+  );
+  // Load the account document
+  const account = await load(credential.user.uid);
+  if (account) {
+    // Check the lock state
+    if (account.data.state.locked) {
+      // Logout the account
+      await fa.signOut(firebaseAuth);
+      // Account is locked
+      throw new FirebaseError('auth/account-locked', 'The account is locked.');
+    } else {
+      // Account is authorized, update the last login timestamp
+      account.data.state.lastLogin = Timestamp.now();
+      await account.update(false);
+      // Return the account
+      return account;
+    }
+  }
+  // Unexpected state, account document not found
+  throw new Error(
+    `No Firebase account document found for user ID "${credential.user.uid}".`
   );
 }

@@ -79,9 +79,14 @@ import AppInput from 'components/common/AppInput.vue';
 import { onBeforeMount, ref } from 'vue';
 import AppButton from 'components/common/AppButton.vue';
 import { useCommonComposables } from 'src/scripts/utilities/common';
+import { useRunTask } from 'src/scripts/utilities/runTask';
+import { processFireabseError } from 'src/scripts/utilities/authentication';
+import { login } from 'src/scripts/application/Account';
 
 // Get common composables
 const cmp = useCommonComposables();
+// Get run task composable
+const runTask = useRunTask();
 
 // Email Input Reference
 const inputEmail = ref<typeof AppInput | null>(null);
@@ -115,8 +120,29 @@ function resetErrorMessages(): void {
   passwordError.value = null;
 }
 
+/**
+ * This method is called when the user submits the form for login to the application.
+ */
 function submit(): void {
-  // TODO to be implemented
-  console.log('submit');
+  // Reset error messages
+  resetErrorMessages();
+
+  // Start the task to log in the user
+  runTask(
+    // Task handler
+    async () => {
+      // Login the user
+      await login(email.value as string, password.value as string);
+      // Set email cookie
+      cmp.quasar.cookies.set('email', email.value as string, { expires: 365 });
+      // Route to the main layout
+      await cmp.router.push({ path: '/' });
+    },
+    // Error handler
+    (error) => {
+      // Process Firebase error
+      return processFireabseError(cmp.i18n.t, error, emailError, passwordError);
+    }
+  );
 }
 </script>

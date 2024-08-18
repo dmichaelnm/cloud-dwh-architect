@@ -31,11 +31,26 @@ export function processFireabseError(
     emailError.value = t('authentication.error.emailAlreadyInUse');
     return true;
   }
+  if (errorCode === 'auth/account-locked') {
+    // Account is locked
+    emailError.value = t('authentication.error.accountLocked');
+    return true;
+  }
   if (passwordError != null) {
     // A password error reference is provided
     if (errorCode === 'auth/weak-password') {
       // Password is too weak
       passwordError.value = t('authentication.error.weakPassword');
+      return true;
+    }
+    // Invalid credentials
+    if (errorCode === 'auth/invalid-credential') {
+      passwordError.value = t('authentication.error.invalidCredential');
+      return true;
+    }
+    // Too many failed attempts
+    if (errorCode === 'auth/too-many-requests') {
+      passwordError.value = t('authentication.error.tooManyFailedAttempts');
       return true;
     }
   }

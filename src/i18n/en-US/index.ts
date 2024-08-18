@@ -84,7 +84,13 @@ export default {
       // Password too weak
       weakPassword: 'The password must have at least 6 characters.',
       // Email is already in use
-      emailAlreadyInUse: 'An account with this email address already exists.'
+      emailAlreadyInUse: 'An account with this email address already exists.',
+      // Invalid credential
+      invalidCredential: 'The login credentials are incorrect.',
+      // Too many failed attempts
+      tooManyFailedAttempts: 'Too many failed login attempts.',
+      // Account is locked
+      accountLocked: 'The account is locked.'
     },
     // Login Page Messages
     login: {

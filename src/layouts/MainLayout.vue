@@ -44,6 +44,9 @@ onBeforeMount(() => {
     if (account === null) {
       // There is no authorized account, redirect to login page
       cmp.router.push({ path: '/authentication/login' });
+    } else {
+      // Found authorized account
+      console.log(account);
     }
   });
 });
