@@ -15,6 +15,22 @@ export type TSelectOption = {
 };
 
 /**
+ * Represents a dialog button.
+ */
+export type TDialogButton = {
+  /** The value of the button */
+  value: string;
+  /** The localized key of the label of the button */
+  label: string;
+  /** An optional appearance of the button */
+  appearance?: 'button' | 'link' | 'icon';
+  /** An optional color of the button */
+  color?: string;
+  /** An optional icon for the button */
+  icon?: string;
+}
+
+/**
  * Returns an object that contains common composable functions.
  *
  * @returns {Object} An object containing the following composable functions:

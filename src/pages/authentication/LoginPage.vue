@@ -55,6 +55,7 @@
             <app-button
               appearance="link"
               :label="$t('authentication.register.button')"
+              to="/authentication/register"
             />
           </div>
           <!-- Reset Password Column -->

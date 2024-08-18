@@ -1,6 +1,8 @@
-import { onAuthStateChanged } from 'firebase/auth';
+import * as fa from 'firebase/auth';
 import * as fs from 'src/scripts/application/FSDocument';
 import { firebaseAuth } from 'src/scripts/utilities/firebase';
+import { ELanguage } from 'src/scripts/options/language';
+import { createDocument } from 'src/scripts/application/FSDocument';
 
 /**
  * The structure of a data object of an Account document.
@@ -57,7 +59,7 @@ export function onAccountStateChange(
   handler: (account: Account | null) => void
 ): void {
   // Register the event listener for changes on the authentication state of the current Firebase user
-  onAuthStateChanged(firebaseAuth, async (user) => {
+  fa.onAuthStateChanged(firebaseAuth, async (user) => {
     if (user === null) {
       // If the user is null then we don't have an authenticated Firebase user and
       // call the handler with null as account
@@ -84,4 +86,48 @@ export function onAccountStateChange(
       }
     }
   });
+}
+
+/**
+ * Creates a new account.
+ *
+ * @param {string} firstName - The first name of the account holder.
+ * @param {string} lastName - The last name of the account holder.
+ * @param {string} email - The email address for the account.
+ * @param {string} password - The password for the account.
+ * @param {boolean} dark - Indicates if the account prefers a dark theme.
+ * @param {ELanguage} language - The preferred language for the account.
+ * @return {Promise<Account>} - A Promise that resolves to the newly created Account object.
+ */
+export async function createAccount(
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  dark: boolean,
+  language: ELanguage
+): Promise<Account> {
+  // Create the new account in Firebase
+  const credential = await fa.createUserWithEmailAndPassword(
+    firebaseAuth,
+    email,
+    password
+  );
+  // Update the display name
+  await fa.updateProfile(credential.user, {
+    displayName: `${firstName} ${lastName}`,
+  });
+  // Create the data object for the new account
+  const data: IAccountData = {
+    common: { name: `${firstName} ${lastName}`, description: null },
+    profile: { firstName: firstName, lastName: lastName, email: email },
+    preferences: { dark: dark, language: language },
+    state: { locked: true },
+  };
+  // Create the account document
+  return await createDocument<IAccountData, Account>(
+    'account',
+    data,
+    credential.user.uid
+  );
 }

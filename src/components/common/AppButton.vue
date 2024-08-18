@@ -11,6 +11,7 @@
     :href="href"
     :type="type"
     :class="`appearance-${appearance}`"
+    :to="to"
     no-caps
     @click="emit('click')"
   >
@@ -47,6 +48,8 @@ defineProps<{
   tooltip?: string;
   /** The type of the button */
   type?: 'button' | 'submit' | 'reset';
+  /** Target of a routing */
+  to?: string;
 }>();
 
 /** Defines the events that can be emitted by this component */

@@ -1,6 +1,12 @@
 <template>
   <!-- Layout -->
   <q-layout view="lHh Lpr lFf">
+    <!-- Message Dialog -->
+    <message-dialog
+      v-model="messageDialogOptions.visibility"
+      :options="messageDialogOptions"
+    />
+
     <!-- Footer -->
     <q-footer class="footer">
       <!-- Footer Main DIV -->
@@ -26,4 +32,9 @@
 
 <script setup lang="ts">
 import SocialMediaLinks from 'components/application/SocialMediaLinks.vue';
+import MessageDialog from 'components/application/MessageDialog.vue';
+import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
+
+// Get the message dialog options
+const { messageDialogOptions } = useMessageDialog();
 </script>
