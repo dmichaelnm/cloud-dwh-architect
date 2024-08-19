@@ -27,7 +27,7 @@ jobs:
           echo "  major: '${{vars.VERSION_MAJOR}}'," >> version.ts
           echo "  minor: '${{vars.VERSION_MINOR}}'," >> version.ts
           echo "  patch: '${{vars.VERSION_PATCH}}'," >> version.ts
-          echo "  build: '$CURRENT_DATE'" >> version.ts
+          echo "  build: '$CURRENT_DATE'," >> version.ts
           echo "};" >> version.ts
           cd ../../..
 
@@ -43,6 +43,7 @@ jobs:
           echo "  appId: '${{secrets.FIREBASE_APP_ID}}'," >> firebase.ts
           echo "  measurementId: '${{secrets.FIREBASE_MEASUREMENT_ID}}'," >> firebase.ts
           echo "};" >> firebase.ts
+          cd ../../..
 
       - name: Build Quasar Application
         run: npx quasar build
