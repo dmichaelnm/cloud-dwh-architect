@@ -16,6 +16,11 @@
           </div>
           <!-- Space Column -->
           <div class="col-grow" />
+          <!-- Account Name & Role -->
+          <div class="col-auto account-text text-right">
+            <!-- Account Name -->
+            <div>{{ cmp.session.currentAccountName }}</div>
+          </div>
           <!-- Account Menu Row -->
           <div class="col-auto">
             <!-- Account Menu -->
@@ -152,6 +157,18 @@
 .body--dark .application-title {
   font-variant: small-caps;
   color: $dark-text-normal;
+}
+
+// Account Name & Role
+.account-text {
+  padding: 0 16px;
+  font-size: 9pt;
+  color: $light-text-hint;
+}
+
+// Account Name & Role (Dark Mode)
+.body--dark .account-text {
+  color: $dark-text-hint;
 }
 </style>
 

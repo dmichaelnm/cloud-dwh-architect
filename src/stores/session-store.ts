@@ -15,6 +15,14 @@ export const useSessionStore = defineStore('session', {
     currentAccount(): Account {
       return this.account as Account;
     },
+    /**
+     * Returns the name of the current account.
+     *
+     * @return {string} The name of the current account, or an empty string if the account is null.
+     */
+    currentAccountName(): string {
+      return this.account != null ? this.account.data.common.name : '';
+    }
   },
   actions: {},
 });
