@@ -13,6 +13,8 @@ export default {
   button: {
     // Back
     back: 'Zurück',
+    // Cancel
+    cancel: 'Abbrechen',
     // Close
     close: 'Schließen',
     // Dark Mode
@@ -22,7 +24,19 @@ export default {
     // Light Mode
     lightMode: 'Heller Modus',
     // Logout
-    logout: 'Abmelden'
+    logout: 'Abmelden',
+    // Save
+    save: 'Speichern'
+  },
+
+  // Common Labels
+  label: {
+    // Custom Attributes
+    attributes: 'Benutzerdefinierte Attribute',
+    // Name
+    name: 'Name',
+    // Description
+    description: 'Beschreibung (optional)'
   },
 
   // Language Labels
@@ -148,4 +162,26 @@ export default {
       }
     },
   },
+
+  // Project Messages
+  project: {
+    // Project Editor Messages
+    editor: {
+      // Create Messages
+      create: {
+        // Create Editor Title
+        title: 'Neues Projekt erstellen',
+        // Create Editor Message
+        message: 'Beginnen Sie ein neues Projekt, indem Sie hier die grundlegenden Eigenschaften wie Name und ' +
+          'Beschreibung angeben. Außerdem können Sie weitere Mitglieder Ihrem Projekt hinzufügen und Ihnen ' +
+          'verschiedene Rollen zuweisen. Beachten Sie dabei jedoch, dass diese ein registriertes Konto für diese ' +
+          'Anwendung besitzen müssen.'
+      },
+      // Tab Labels
+      tab: {
+        // Project Members
+        members: 'Projektmitglieder'
+      }
+    }
+  }
 };

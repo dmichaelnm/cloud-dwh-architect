@@ -16,13 +16,20 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'reset',
         component: () => import('pages/authentication/ResetPasswordPage.vue'),
-      }
-    ]
+      },
+    ],
   },
 
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'project/editor/',
+        component: () =>
+          import('pages/application/project/ProjectEditorPage.vue'),
+      },
+    ],
   },
 
   // Always leave this as last one,

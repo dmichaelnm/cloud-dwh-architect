@@ -176,29 +176,52 @@
 import SocialMediaLinks from 'components/application/SocialMediaLinks.vue';
 import { onBeforeMount } from 'vue';
 import { onAccountStateChange } from 'src/scripts/application/Account';
-import { useCommonComposables } from 'src/scripts/utilities/common';
+import {
+  EEditorMode,
+  useCommonComposables,
+  useOpenEditor,
+} from 'src/scripts/utilities/common';
 import { versionInfo } from 'src/scripts/config/version';
 import AppButton from 'components/common/AppButton.vue';
 import AppMenuItem from 'components/common/AppMenuItem.vue';
 import { logout } from 'src/scripts/utilities/firebase';
 import { languageOptions } from 'src/scripts/options/language';
+import { loadProjects } from 'src/scripts/application/Project';
+import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 
 // Get common composables
 const cmp = useCommonComposables();
+// Get open editor composable
+const openEditor = useOpenEditor();
 
 /** Lifecycle method that is called before this component is mounted */
 onBeforeMount(() => {
+  // Lock the screen
+  cmp.quasar.loading.show();
   // Register the event listener for changes on the account state of the current user
-  onAccountStateChange((account) => {
+  onAccountStateChange(async (account) => {
     if (account === null) {
       // There is no authorized account, redirect to login page
-      cmp.router.push({ path: '/authentication/login' });
+      await cmp.router.push({ path: '/authentication/login' });
     } else {
       // Apply account to the session
       cmp.session.account = account;
       // Found authorized account, set dark mode and language
       cmp.quasar.dark.set(account.data.preferences.dark);
       cmp.i18n.locale.value = account.data.preferences.language;
+      // Load all projects of the current user
+      cmp.session.projects = await loadProjects();
+      if (cmp.session.projects.length === 0) {
+        // If the user has no projects, redirect to new project editor page
+        await openEditor(
+          EFSDocumentType.project,
+          EEditorMode.create,
+          undefined,
+          false
+        );
+      }
+      // Unlock the screen
+      cmp.quasar.loading.hide();
     }
   });
 });

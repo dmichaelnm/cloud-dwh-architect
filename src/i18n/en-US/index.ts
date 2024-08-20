@@ -13,6 +13,8 @@ export default {
   button: {
     // Back
     back: 'Back',
+    // Cancel
+    cancel: 'Cancel',
     // Close
     close: 'Close',
     // Dark Mode
@@ -22,7 +24,19 @@ export default {
     // Light Mode
     lightMode: 'Light Mode',
     // Logout
-    logout: 'Log Out'
+    logout: 'Log Out',
+    // Save
+    save: 'Save',
+  },
+
+  // Common Labels
+  label: {
+    // Custom Attributes
+    attributes: 'Custom Attributes',
+    // Name
+    name: 'Name',
+    // Description
+    description: 'Description (optional)'
   },
 
   // Social Media Links
@@ -98,7 +112,7 @@ export default {
       // Too many failed attempts
       tooManyFailedAttempts: 'Too many failed login attempts.',
       // Account is locked
-      accountLocked: 'The account is locked.'
+      accountLocked: 'The account is locked.',
     },
     // Login Page Messages
     login: {
@@ -124,14 +138,16 @@ export default {
         // Title
         title: 'Account Successfully Registered',
         // Message
-        message: 'Your account has been created successfully. Please contact an administrator so that they can ' +
-          'activate your new account. Only then will you be able to log in to the application.'
-      }
+        message:
+          'Your account has been created successfully. Please contact an administrator so that they can ' +
+          'activate your new account. Only then will you be able to log in to the application.',
+      },
     },
     // Reset Password Messages
     reset: {
       // Reset Password Message
-      message: 'If you have forgotten your password or would like to reset it for any other reason, you can do so ' +
+      message:
+        'If you have forgotten your password or would like to reset it for any other reason, you can do so ' +
         'here by entering your account email address in the field below. You will receive an email at the address ' +
         'provided. This will contain a link to change your password.',
       // Reset Password Button
@@ -141,8 +157,30 @@ export default {
         // Title
         title: 'Email successfully sent',
         // Message
-        message: 'The email with the link to reset your password has been sent successfully. Please also check your ' +
-          'spam folder.'
+        message:
+          'The email with the link to reset your password has been sent successfully. Please also check your ' +
+          'spam folder.',
+      },
+    },
+  },
+
+  // Project Messages
+  project: {
+    // Project Editor Messages
+    editor: {
+      // Create Messages
+      create: {
+        // Editor Title
+        title: 'Create New Project',
+        // Create Editor Message
+        message: 'Start a new project by specifying the basic properties such as name and description here. You can ' +
+          'also add more members to your project and assign them different roles. However, please note that they ' +
+          'must have a registered account for this application.'
+      },
+      // Tab Labels
+      tab: {
+        // Project Members
+        members: 'Project Members'
       }
     },
   },

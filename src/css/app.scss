@@ -22,6 +22,26 @@
 }
 
 // ============================================================================
+// Secondary button color
+// ============================================================================
+
+.text-sbutton {
+  color: $light-text-normal !important;
+}
+
+.body--dark .text-sbutton {
+  color: $dark-text-normal !important;
+}
+
+.bg-sbutton {
+  background-color: $light-text-normal !important;
+}
+
+.body--dark .bg-sbutton {
+  background-color: $dark-text-normal !important;
+}
+
+// ============================================================================
 // Social media button color
 // ============================================================================
 
@@ -102,6 +122,14 @@ body.body--dark {
 
 .body--dark .q-separator {
   background-color: $dark-frame;
+}
+
+// ============================================================================
+// Tabs
+// ============================================================================
+
+.q-tab-panels {
+  background-color: transparent;
 }
 
 // ============================================================================

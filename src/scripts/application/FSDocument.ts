@@ -2,11 +2,37 @@ import * as fs from 'firebase/firestore';
 import * as fb from 'src/scripts/utilities/firebase';
 
 /**
+ * Enumeration representing the custom attribute types.
+ */
+export enum ECustomAttributeType {
+  /** String */
+  string = 'string',
+  /** Number */
+  number = 'number',
+  /** Boolean */
+  boolean = 'boolean',
+}
+
+/**
+ * Represents a custom attribute.
+ */
+export type TCustomAttribute = {
+  /** The key of the custom attribute */
+  key: string;
+  /** The type of the custom attribute */
+  type: ECustomAttributeType;
+  /** The value of the custom attribute */
+  value: string | number | boolean;
+};
+
+/**
  * Defines the possible document types.
  */
 export enum EFSDocumentType {
   /** Account document */
   account = 'account',
+  /** Project document */
+  project = 'project',
 }
 
 /**
@@ -204,6 +230,34 @@ export async function load<D extends IFSDocumentData>(
     // Document was not found
     return undefined;
   }
+}
+
+/**
+ * Loads documents from a Firestore collection based on specified constraints.
+ *
+ * @param {string} path - The path to the Firestore collection.
+ * @param {...fs.QueryConstraint[]} constraints - The query constraints to apply.
+ * @return {Promise<FSDocument<D>[]>} - A promise that resolves to an array of FSDocument objects.
+ */
+export async function loadDocuments<D extends IFSDocumentData>(
+  path: string,
+  ...constraints: fs.QueryConstraint[]
+): Promise<FSDocument<D>[]> {
+  // Create the collection reference
+  const collectionRef = fs.collection(fb.firebaseStore, path);
+  // Create the query
+  const qry = fs.query(collectionRef, ...constraints);
+  // Read documents from Firestore
+  const snapshot = await fs.getDocs(qry);
+  // Create result array
+  const result: FSDocument<D>[] = [];
+  // Iterate over all documents
+  for (const doc of snapshot.docs) {
+    // Add document to result array
+    result.push(new FSDocument<D>({ document: doc }));
+  }
+  // Return result array
+  return result;
 }
 
 /**

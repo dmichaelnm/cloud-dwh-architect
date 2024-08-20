@@ -27,6 +27,18 @@ export function getCurrentAccountName(): string {
 }
 
 /**
+ * Retrieves the ID of the currently authorized user.
+ *
+ * @returns {string} The ID of the currently authorized user.
+ */
+export function getCurrentAccountId(): string {
+  // Get the current authorized user from Firebase
+  const user = firebaseAuth.currentUser;
+  // Returns the ID of the current user
+  return user?.uid as string;
+}
+
+/**
  * Sends a reset password email to the specified email address.
  *
  * @param {string} email - The email address to send the reset password email to.
