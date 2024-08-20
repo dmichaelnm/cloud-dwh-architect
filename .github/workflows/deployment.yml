@@ -23,7 +23,7 @@ jobs:
         run: |
           cd src/scripts/config
           CURRENT_DATE=$(date "+%Y-%m-%d %H:%M:%S")
-          echo "export const versionConfig = {" > version.ts
+          echo "export const versionInfo = {" > version.ts
           echo "  major: '${{vars.VERSION_MAJOR}}'," >> version.ts
           echo "  minor: '${{vars.VERSION_MINOR}}'," >> version.ts
           echo "  patch: '${{vars.VERSION_PATCH}}'," >> version.ts
