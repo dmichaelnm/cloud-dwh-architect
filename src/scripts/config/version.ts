@@ -1,5 +1,5 @@
 /** Version Information */
-export const versionConfig = {
+export const versionInfo = {
   /** Major Version Number */
   major: '0',
   /** Minor Version Number */

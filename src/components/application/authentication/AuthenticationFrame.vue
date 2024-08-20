@@ -15,10 +15,10 @@
           <div class="application-hint">
             {{
               $t('application.version', {
-                major: versionConfig.major,
-                minor: versionConfig.minor,
-                patch: versionConfig.patch,
-                build: versionConfig.build,
+                major: versionInfo.major,
+                minor: versionInfo.minor,
+                patch: versionInfo.patch,
+                build: versionInfo.build,
               })
             }}
           </div>
@@ -115,7 +115,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
-import { versionConfig } from 'src/scripts/config/version';
+import { versionInfo } from 'src/scripts/config/version';
 import { useCommonComposables } from 'src/scripts/utilities/common';
 import { ELanguage, languageOptions } from 'src/scripts/options/language';
 import AppButton from 'components/common/AppButton.vue';

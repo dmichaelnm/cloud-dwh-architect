@@ -113,10 +113,10 @@
             <!-- Version Information -->
             {{
               $t('application.version', {
-                major: versionConfig.major,
-                minor: versionConfig.minor,
-                patch: versionConfig.patch,
-                build: versionConfig.build,
+                major: versionInfo.major,
+                minor: versionInfo.minor,
+                patch: versionInfo.patch,
+                build: versionInfo.build,
               })
             }}
           </div>
@@ -177,7 +177,7 @@ import SocialMediaLinks from 'components/application/SocialMediaLinks.vue';
 import { onBeforeMount } from 'vue';
 import { onAccountStateChange } from 'src/scripts/application/Account';
 import { useCommonComposables } from 'src/scripts/utilities/common';
-import { versionConfig } from 'src/scripts/config/version';
+import { versionInfo } from 'src/scripts/config/version';
 import AppButton from 'components/common/AppButton.vue';
 import AppMenuItem from 'components/common/AppMenuItem.vue';
 import { logout } from 'src/scripts/utilities/firebase';
