@@ -2,9 +2,12 @@ import * as fa from 'firebase/auth';
 import * as fs from 'src/scripts/application/FSDocument';
 import { firebaseAuth } from 'src/scripts/utilities/firebase';
 import { ELanguage } from 'src/scripts/options/language';
-import { createDocument } from 'src/scripts/application/FSDocument';
+import {
+  createDocument,
+  loadDocuments,
+} from 'src/scripts/application/FSDocument';
 import { FirebaseError } from 'firebase/app';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp, where } from 'firebase/firestore';
 
 /**
  * The structure of a data object of an Account document.
@@ -171,4 +174,21 @@ export async function login(email: string, password: string): Promise<Account> {
   throw new Error(
     `No Firebase account document found for user ID "${credential.user.uid}".`
   );
+}
+
+/**
+ * Retrieves an account based on the provided email.
+ *
+ * @param {string} email - The email address to search for the account document in Firebase
+ * @return {Promise<Account | null>} A promise that resolves to the account with the specified email,
+ *    or null if no account is found.
+ */
+export async function getAccount(email: string): Promise<Account | null> {
+  // Load all documents with the specified email address (we expect only one)
+  const result = await loadDocuments<IAccountData>(
+    'account',
+    where('profile.email', '==', email)
+  );
+  // Return the first element from the array as account or null, if the array is empty
+  return result.length > 0 ? (result[0] as Account) : null;
 }

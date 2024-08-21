@@ -20,7 +20,6 @@
 .body--dark .bg-button {
   background-color: $dark-button !important;
 }
-
 // ============================================================================
 // Secondary button color
 // ============================================================================
@@ -95,6 +94,11 @@ body.body--dark {
   color: $dark-text-normal;
 }
 
+
+.q-dark {
+  color: $dark-text-normal;
+}
+
 // ============================================================================
 // Menu
 // ============================================================================
@@ -132,6 +136,40 @@ body.body--dark {
   background-color: transparent;
 }
 
+.q-tab-panel {
+  padding: 16px 0;
+}
+
+// ============================================================================
+// Fields
+// ============================================================================
+
+.q-field--outlined.q-field--readonly .q-field__control:before {
+  border-style: solid;
+}
+// ============================================================================
+// Table
+// ============================================================================
+
+.q-table {
+  border-collapse: collapse;
+}
+
+.q-table thead, .q-table tr, .q-table th, .q-table td {
+  border-color: $light-text-header;
+}
+
+.q-table__container {
+  background-color: transparent;
+}
+
+.q-table tr td {
+  border-color: $light-frame;
+}
+
+.q-table--dark tr td {
+  border-color: $dark-frame;
+}
 // ============================================================================
 // Footer
 // ============================================================================

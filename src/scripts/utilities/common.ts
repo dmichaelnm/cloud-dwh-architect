@@ -1,6 +1,6 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { useQuasar } from 'quasar';
+import { QTableColumn, useQuasar } from 'quasar';
 import { useSessionStore } from 'stores/session-store';
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 
@@ -52,6 +52,30 @@ export type TTabDefinition = {
   key: string;
   /** The label of the tab */
   label: string;
+};
+
+/**
+ * Enumeration for different types of input for a table column.
+ */
+export enum EInputType {
+  /** No input */
+  none = 'none',
+  /** Text Input Field */
+  text = 'text',
+  /** Select Combobox Field */
+  select = 'select',
+  /** Checkbox */
+  checkbox = 'checkbox',
+}
+
+/**
+ * Represents a type for defining a table column.
+ */
+export type TTableColumn = QTableColumn & {
+  /** Type of input for the table column */
+  input?: EInputType | ((row: any) => EInputType);
+  /** Options of a select input */
+  options?: TSelectOption[];
 };
 
 /**

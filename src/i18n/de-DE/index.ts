@@ -25,8 +25,10 @@ export default {
     lightMode: 'Heller Modus',
     // Logout
     logout: 'Abmelden',
+    // Okay
+    okay: 'Okay',
     // Save
-    save: 'Speichern'
+    save: 'Speichern',
   },
 
   // Common Labels
@@ -36,7 +38,28 @@ export default {
     // Name
     name: 'Name',
     // Description
-    description: 'Beschreibung (optional)'
+    description: 'Beschreibung (optional)',
+    // Rows per page
+    rowsPerPage: 'Zeilen pro Seite',
+  },
+
+  // Enumeration Messages
+  enum: {
+    // Project Member Roles
+    memberRole: {
+      // Owner
+      owner: 'Eigentümer',
+      // Project Manager
+      manager: 'Projektleiter',
+      // Maintainer
+      maintainer: 'Betreuer',
+      // Deployer
+      deployer: 'Bereitsteller',
+      // Developer
+      developer: 'Entwickler',
+      // Visitor
+      vistor: 'Besucher',
+    },
   },
 
   // Language Labels
@@ -74,6 +97,16 @@ export default {
         'Es ist ein unerwarteter Fehler aufgetreten. Dies hätte nicht passieren dürfen. Bitte kontaktieren Sie ' +
         'Ihren Administrator und übergeben Ihn die detailierte Fehlermeldung.',
     },
+    // Account Selection Dialog
+    accountSelection: {
+      // Title
+      title: 'Konto auswählen',
+      // Message
+      message:
+        'Um ein Konto auszuwählen, geben Sie in das untenstehende Eingabefeld die Email-Adresse, mit der das Konto registriert wurde an.',
+      // Unknown email address
+      unknownEmail: 'Die Email-Adresse ist unbekannt.',
+    },
   },
 
   // Common Error Messages
@@ -106,13 +139,14 @@ export default {
       // Password too weak
       weakPassword: 'Das Kennwort muss mindestens 6 Zeichen lang sein.',
       // Email is already in use
-      emailAlreadyInUse: 'Es existiert bereits ein Konto mit dieser Email-Adresse.',
+      emailAlreadyInUse:
+        'Es existiert bereits ein Konto mit dieser Email-Adresse.',
       // Invalid credential
       invalidCredential: 'Die Anmeldeinformationen sind nicht korrekt.',
       // Too many failed attempts
       tooManyFailedAttempts: 'Zu viele fehlgeschlagene Anmeldeversuche.',
       // Account is locked
-      accountLocked: 'Das Konto ist gesperrt.'
+      accountLocked: 'Das Konto ist gesperrt.',
     },
     // Login Page Messages
     login: {
@@ -140,14 +174,16 @@ export default {
         // Title
         title: 'Konto erfolgreich erstellt',
         // Message
-        message: 'Ihr Konto wurde erfolgreich erstellt. Bitte kontaktieren Sie einen Administrator, damit dieser Ihr ' +
-          'neues Konto freischalten kann. Erst danach ist eine Anmeldung an der Applikation möglich.'
-      }
+        message:
+          'Ihr Konto wurde erfolgreich erstellt. Bitte kontaktieren Sie einen Administrator, damit dieser Ihr ' +
+          'neues Konto freischalten kann. Erst danach ist eine Anmeldung an der Applikation möglich.',
+      },
     },
     // Reset Password Messages
     reset: {
       // Reset Password Message
-      message: 'Falls Sie Ihr Kennwort vergessen haben oder aus anderen Gründen zurücksetzen möchten, können Sie ' +
+      message:
+        'Falls Sie Ihr Kennwort vergessen haben oder aus anderen Gründen zurücksetzen möchten, können Sie ' +
         'dies hier tun, indem Sie die Email-Adresse Ihres Kontos in das untenstehende Eingabefeld eintragen. Sie ' +
         'erhalten eine Email an die angegebene Adresse. Diese enthält einen Link für das Ändern Ihres Kennworts.',
       // Reset Password Button
@@ -157,9 +193,10 @@ export default {
         // Title
         title: 'Email erfolgreich versendet',
         // Message
-        message: 'Die Email mit dem Link zum Zurücksetzen des Kennworts wurde erfolgreich versendet. Überprüfen Sie ' +
-          'gegebenenfalls auch Ihren Spam-Ordner.'
-      }
+        message:
+          'Die Email mit dem Link zum Zurücksetzen des Kennworts wurde erfolgreich versendet. Überprüfen Sie ' +
+          'gegebenenfalls auch Ihren Spam-Ordner.',
+      },
     },
   },
 
@@ -172,16 +209,45 @@ export default {
         // Create Editor Title
         title: 'Neues Projekt erstellen',
         // Create Editor Message
-        message: 'Beginnen Sie ein neues Projekt, indem Sie hier die grundlegenden Eigenschaften wie Name und ' +
+        message:
+          'Beginnen Sie ein neues Projekt, indem Sie hier die grundlegenden Eigenschaften wie Name und ' +
           'Beschreibung angeben. Außerdem können Sie weitere Mitglieder Ihrem Projekt hinzufügen und Ihnen ' +
           'verschiedene Rollen zuweisen. Beachten Sie dabei jedoch, dass diese ein registriertes Konto für diese ' +
-          'Anwendung besitzen müssen.'
+          'Anwendung besitzen müssen.',
       },
       // Tab Labels
       tab: {
         // Project Members
-        members: 'Projektmitglieder'
-      }
-    }
-  }
+        members: 'Projektmitglieder',
+      },
+    },
+    // Project Member Table Messages
+    member: {
+      // Owner & Manager Message
+      ownerMessage:
+        'Wenn Sie der Projekteigentümer sind, können Sie hier einen Projektleiter festlegen. Dieser hat ' +
+        'alle Berechtigungen, die auch der Eigentümer hat, mit der Ausnahme, dass er keinen anderen Projektleiter ' +
+        'festlegen kann. Wenn Sie keinen expliziten Projektleiter festlegen wollen, können Sie auch sich selbst zum ' +
+        'Projektleiter ernennen.',
+      // Table Message
+      tableMessage:
+        'Hier können Sie die Mitglieder Ihres Projektteams verwalten. Wenn Sie ein neues Mitglied hinzufügen ' +
+        'möchten, muss dieses ein bereits registriertes Konto besitzen. Über die Rolle eines Mitglieds können Sie ' +
+        'festlegen welche Berechtigungen dieses hat. Projekteigentümer und Projektleiter können nicht als Mitglieder ' +
+        'ausgewählt werden.',
+      // Table Header Labels
+      header: {
+        // Name of the project member
+        name: 'Name des Projektmitglieds',
+        // Role
+        role: 'Rolle',
+      },
+      // Error Messages
+      error: {
+        // Manager cannot be a team member
+        alreadyMember:
+          'Das gewählte Konto ist bereits ein Team-Mitglied.',
+      },
+    },
+  },
 };

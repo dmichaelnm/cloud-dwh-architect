@@ -25,6 +25,8 @@ export default {
     lightMode: 'Light Mode',
     // Logout
     logout: 'Log Out',
+    // Okay
+    okay: 'Okay',
     // Save
     save: 'Save',
   },
@@ -36,7 +38,9 @@ export default {
     // Name
     name: 'Name',
     // Description
-    description: 'Description (optional)'
+    description: 'Description (optional)',
+    // Rows per page
+    rowsPerPage: 'Rows per page',
   },
 
   // Social Media Links
@@ -53,6 +57,25 @@ export default {
     linkedIn: 'Linked In',
     // Twitch
     twitch: 'Twitch',
+  },
+
+  // Enumeration Messages
+  enum: {
+    // Project Member Roles
+    memberRole: {
+      // Owner
+      owner: 'Owner',
+      // Project Manager
+      manager: 'Project Manager',
+      // Maintainer
+      maintainer: 'Maintainer',
+      // Deployer
+      deployer: 'Deployer',
+      // Developer
+      developer: 'Developer',
+      // Visitor
+      vistor: 'Visitor',
+    },
   },
 
   // Language Labels
@@ -73,6 +96,16 @@ export default {
       message:
         'An unexpected error occurred. This should not have happened. Please contact your administrator and ' +
         'provide him with the detailed error message.',
+    },
+    // Account Selection Dialog
+    accountSelection: {
+      // Title
+      title: 'Choose Account',
+      // Message
+      message:
+        'To select an account, enter the email address used to register the account in the input field below.',
+      // Unknown email address
+      unknownEmail: 'The email address is unknown.',
     },
   },
 
@@ -173,15 +206,41 @@ export default {
         // Editor Title
         title: 'Create New Project',
         // Create Editor Message
-        message: 'Start a new project by specifying the basic properties such as name and description here. You can ' +
+        message:
+          'Start a new project by specifying the basic properties such as name and description here. You can ' +
           'also add more members to your project and assign them different roles. However, please note that they ' +
-          'must have a registered account for this application.'
+          'must have a registered account for this application.',
       },
       // Tab Labels
       tab: {
         // Project Members
-        members: 'Project Members'
-      }
+        members: 'Project Members',
+      },
+      // Project Member Table Messages
+      member: {
+        // Owner & Manager Message
+        ownerMessage:
+          'If you are the project owner, you can specify a project manager here. This manager has all ' +
+          'the permissions that the owner has, except that he cannot specify another project manager. If you do not ' +
+          'want to specify an explicit project manager, you can also appoint yourself as the project manager.',
+        // Table Message
+        message:
+          'Here you can manage the members of your project team. If you want to add a new member, they must ' +
+          'already have a registered account. You can use the role of a member to determine which permissions they ' +
+          'have. Project owners and project managers cannot be selected as members.',
+        // Table Header Messages
+        header: {
+          // Name of the project member
+          name: 'Name of Project Member',
+          // Role
+          role: 'Role',
+        },
+        // Error Messages
+        error: {
+          // Manager cannot be a team member
+          alreadyMember: 'The selected account is already a team member.',
+        },
+      },
     },
   },
 };

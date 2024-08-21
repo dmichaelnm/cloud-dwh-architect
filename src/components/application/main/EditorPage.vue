@@ -26,7 +26,7 @@
         <!-- Message Row -->
         <div class="row">
           <!-- Message Column -->
-          <div class="col-6">
+          <div class="col-9">
             {{ $t(`${scope}.editor.${mode}.message`) }}
           </div>
         </div>
@@ -117,23 +117,19 @@
 
 <script setup lang="ts">
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
-import {
-  EEditorMode,
-  TTabDefinition,
-  useCommonComposables,
-} from 'src/scripts/utilities/common';
+import * as cm from 'src/scripts/utilities/common';
 import AppButton from 'components/common/AppButton.vue';
 import { ref } from 'vue';
 import AppInput from 'components/common/AppInput.vue';
 import { useRunTask } from 'src/scripts/utilities/runTask';
 
 // Get common composables
-const cmp = useCommonComposables();
+const cmp = cm.useCommonComposables();
 // Get run task composable
 const runTask = useRunTask();
 
 // Get the editor mode
-const mode = cmp.session.editor?.mode as EEditorMode;
+const mode = cmp.session.editor?.mode as cm.EEditorMode;
 // Is the editor cancelable
 const cancelable = cmp.session.editor?.cancelable as boolean;
 
@@ -142,10 +138,10 @@ const props = defineProps<{
   /** The scope of the editor */
   scope: EFSDocumentType;
   /** Component keys */
-  components: TTabDefinition[];
+  components: cm.TTabDefinition[];
   /** Submit Handler function */
   submit: (
-    mode: EEditorMode,
+    mode: cm.EEditorMode,
     name: string,
     description: string | null
   ) => Promise<void>;
@@ -166,4 +162,5 @@ function submitForm(): void {
     await props.submit(mode, name.value, description.value);
   });
 }
+
 </script>
