@@ -17,9 +17,9 @@
             <app-button :label="$t('button.save')" type="submit" />
             <!-- Cancel Button -->
             <app-button
-              v-if="!noCancel"
               :label="$t('button.cancel')"
               color="sbutton"
+              @click="cancelEditor"
             />
           </div>
         </div>
@@ -137,8 +137,6 @@ const props = defineProps<{
   scope: EFSDocumentType;
   /** Component keys */
   components: cm.TTabDefinition[];
-  /** Flag for no canceling option */
-  noCancel?: boolean;
   /** Submit Handler function */
   submit: (
     mode: cm.EEditorMode,
@@ -155,6 +153,17 @@ const name = ref('');
 // Description
 const description = ref<string | null>(null);
 
+/**
+ * Cancels the editor and navigates back.
+ */
+function cancelEditor(): void {
+  // Go back
+  cmp.router.back();
+}
+
+/**
+ * Submits the form by calling a submit handler function asynchronously.
+ */
 function submitForm(): void {
   // Start the submit process
   runTask(async () => {

@@ -158,11 +158,11 @@ body.body--dark {
 
 .q-table {
   border-collapse: collapse;
-  color: $light-text-highlight;
+  color: $light-text-normal;
 }
 
 .body--dark .q-table {
-  color: $dark-text-highlight;
+  color: $dark-text-normal;
 }
 
 .q-table thead, .q-table tr, .q-table th, .q-table td {

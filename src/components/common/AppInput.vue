@@ -12,6 +12,7 @@
       (value) =>
         !mandatory || (value && value.length > 0) || $t('error.inputEmpty'),
     ]"
+    :hide-bottom-space="hideBottomSpace"
     lazy-rules="ondemand"
     dense
     outlined
@@ -41,6 +42,8 @@ const props = defineProps<{
   error?: string | null;
   /** Flag for showing an error message if the input field is empty */
   mandatory?: boolean;
+  /** Flag for hiding the bottom space */
+  hideBottomSpace?: boolean;
 }>();
 
 /** Defines the events that can be emitted by this component */
@@ -64,6 +67,13 @@ function resetValidation(): void {
   inputField.value?.resetValidation();
 }
 
+/**
+ * Select the content of the input field.
+ */
+function select(): void {
+  inputField.value?.select();
+}
+
 /** Exposed methods of this component */
-defineExpose({ resetValidation });
+defineExpose({ resetValidation, select });
 </script>

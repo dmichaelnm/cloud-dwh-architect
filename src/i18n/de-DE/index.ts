@@ -60,6 +60,15 @@ export default {
       // Visitor
       visitor: 'Besucher',
     },
+    // Custom Attribute Type
+    attributeType: {
+      // String
+      string: 'Zeichenkette',
+      // Number
+      number: 'Zahl',
+      // Boolean
+      boolean: 'Wahrheitswert'
+    }
   },
 
   // Language Labels
@@ -113,6 +122,31 @@ export default {
   error: {
     // Input field must not be empty
     inputEmpty: 'Das Eingabefeld darf nicht leer sein.',
+  },
+
+  // Custom Attribute Messages
+  customAttribute: {
+    // Table Message
+    tableMessage: 'Hier können Sie eigene Attribute festlegen, die später in Vorlagen für die Skriptgenerierung ' +
+      'verwendet werden können.',
+    // Empty Message
+    emptyMessage: 'Bisher wurden noch keine eigenen Attribute erstellt.',
+    // Header Labels
+    header: {
+      // Key
+      key: 'Schlüssel',
+      // Type
+      type: 'Datentyp',
+      // Value
+      value: 'Wert'
+    },
+    // Tooltip Messages
+    tooltip: {
+      // Add Button
+      add: 'Neues Attribut hinzufügen',
+      // Remove Button
+      remove: 'Attribut entfernen'
+    }
   },
 
   // Authentication Messages
@@ -202,6 +236,18 @@ export default {
 
   // Project Messages
   project: {
+    // Button Labels
+    button: {
+      // Create New Project
+      create: 'Neues Projekt'
+    },
+    // General Project Messages
+    message: {
+      // First Project Message
+      firstProject: 'Wie es scheint, haben Sie aktuell noch kein Projekt erstellt und wurden keinem Projekt als ' +
+        'Team-Mitglied zugeordnet. Um mit der Applikation arbeiten zu können benötigen Sie jedoch mindestens ein ' +
+        'Projekt. Beginnen Sie jetzt, indem Sie ein neues Projekt erstellen.'
+    },
     // Project Editor Messages
     editor: {
       // Create Messages

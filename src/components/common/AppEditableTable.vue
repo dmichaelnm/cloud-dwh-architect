@@ -65,13 +65,15 @@
                   v-if="getInputType(col, props.row) !== cm.EInputType.checkbox"
                   :class="
                     col.input === cm.EInputType.select ||
-                    col.input === cm.EInputType.text
+                    col.input === cm.EInputType.text ||
+                    typeof col.input === 'function'
                       ? 'editable-value'
                       : ''
                   "
                 >
                   {{ props.value }}
                 </div>
+
                 <!-- Custom Column Checkbox -->
                 <div
                   v-if="getInputType(col, props.row) === cm.EInputType.checkbox"
@@ -85,6 +87,41 @@
                   <!-- Readonly Checkbox -->
                   <q-icon name="check" v-if="readOnly && props.row[col.name]" />
                 </div>
+
+                <!-- Popup Edit: Input -->
+                <q-popup-edit
+                  :ref="`pe_${col.name}_${props.rowIndex}`"
+                  v-model="props.row[col.name]"
+                  v-if="
+                    !readOnly &&
+                    getInputType(col, props.row) === cm.EInputType.text
+                  "
+                  v-slot="scope"
+                  anchor="center middle"
+                  @show="(<typeof AppInput>$refs.input).select()"
+                >
+                  <!-- Inline Input -->
+                  <app-input
+                    ref="input"
+                    class="inline-editor"
+                    v-model="scope.value"
+                    :label="col.label"
+                    hide-bottom-space
+                    @focusout="
+                      onValueUpdated(props.rowIndex, col.name, scope.value)
+                    "
+                    @keyup.enter="
+                      (<QPopupEdit>(
+                        $refs[`pe_${col.name}_${props.rowIndex}`]
+                      )).hide()
+                    "
+                    @blur="
+                      (<QPopupEdit>(
+                        $refs[`pe_${col.name}_${props.rowIndex}`]
+                      )).hide()
+                    "
+                  />
+                </q-popup-edit>
                 <!-- Popup Edit: Selection -->
                 <q-popup-edit
                   :ref="`pe_${col.name}_${props.rowIndex}`"
@@ -175,17 +212,23 @@
 
 // Editable Value
 .editable-value {
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
+  color: $light-text-highlight;
 }
+
+// Editable Value (Dark Mode)
+.body--dark .editable-value {
+  color: $dark-text-highlight;
+}
+
 </style>
 
 <script setup lang="ts">
 import * as cm from 'src/scripts/utilities/common';
 import { computed, ref } from 'vue';
+import { QPopupEdit } from 'quasar';
 import AppButton from 'components/common/AppButton.vue';
 import AppSelect from 'components/common/AppSelect.vue';
-import { QPopupEdit } from 'quasar';
+import AppInput from 'components/common/AppInput.vue';
 
 /** Defines the properties of this component */
 const props = defineProps<{

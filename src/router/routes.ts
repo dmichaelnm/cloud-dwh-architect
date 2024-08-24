@@ -25,6 +25,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
+        path: 'project/first',
+        component: () => import('pages/application/project/NoProjectPage.vue'),
+      },
+      {
         path: 'project/editor/:mode/:id',
         name: 'projectEditor',
         component: () =>
