@@ -2,6 +2,7 @@
   <!-- Account Selection Dialog -->
   <account-selection-dialog
     v-model="visibility"
+    :validator="validateMember"
     @account-selected="addMember"
   />
 
@@ -40,6 +41,7 @@
       <div class="col">
         <!-- Editable Table -->
         <app-editable-table
+          ref="memberTable"
           :columns="[
             // Name
             {
@@ -58,12 +60,16 @@
               label: $t('project.member.header.role'),
               headerStyle: 'width: 300px',
               input: cm.EInputType.select,
-              field: (row) => row.role,
+              options: memberRoles,
+              translate: true,
+              field: (row) => $t(`enum.memberRole.${row.role}`),
             },
           ]"
           :rows="members"
           :message="$t('project.member.tableMessage')"
           :handler-add="() => (visibility = true)"
+          :tooltip-add="$t('project.member.tooltip.add')"
+          :tooltip-remove="$t('project.member.tooltip.remove')"
           deletable
         />
       </div>
@@ -79,9 +85,12 @@ import * as cm from 'src/scripts/utilities/common';
 import AccountSelectionField from 'components/application/account/AccountSelectionField.vue';
 import { Account } from 'src/scripts/application/Account';
 import AccountSelectionDialog from 'components/application/account/AccountSelectionDialog.vue';
+import { memberRoles } from 'src/scripts/options/memberRoles';
 
 // Get common composables
 const cmp = cm.useCommonComposables();
+// Member table reference
+const memberTable = ref<typeof AppEditableTable | null>(null);
 
 // Project owner account
 const owner = ref<Account | null>(null);
@@ -93,11 +102,11 @@ const members = ref<TProjectMember[]>([]);
 const canChangeManager = ref(false);
 // Account Selection Dialog visibility
 const visibility = ref(false);
+// Get the current mode
+const mode = cmp.route.params.mode as cm.EEditorMode;
 
 /** Lifecycle method that is called before this component is mounted */
 onBeforeMount(() => {
-  // Get the current mode
-  const mode = cmp.session.editor?.mode;
   if (mode === cm.EEditorMode.create) {
     // It's a new project, apply the current user as owner and manager
     owner.value = cmp.session.account;
@@ -116,7 +125,30 @@ function validateManager(account: Account): string | null {
   // Check if the account is not already in member array
   if (members.value.some((mbr) => mbr.id === account.id)) {
     // Found account in member array
-    return cmp.i18n.t('project.editor.member.error.alreadyMember');
+    return cmp.i18n.t('project.member.error.alreadyMember');
+  }
+  // Account is okay
+  return null;
+}
+
+/**
+ * Validates a member account for a project.
+ *
+ * @param {Account} account - The account to validate.
+ * @returns {string | null} - An error message if the account is invalid, or null if the account is valid.
+ */
+function validateMember(account: Account): string | null {
+  // Check if account is not the project owner
+  if (owner.value?.id === account.id) {
+    return cmp.i18n.t('project.member.error.notOwner');
+  }
+  // Check if account is not the project manager
+  if (manager.value?.id === account.id) {
+    return cmp.i18n.t('project.member.error.notManager');
+  }
+  // Check if account is not already a member
+  if (members.value.some((mbr) => mbr.id === account.id)) {
+    return cmp.i18n.t('project.member.error.alreadyMember');
   }
   // Account is okay
   return null;
@@ -134,5 +166,7 @@ function addMember(account: Account): void {
     name: account.data.common.name,
     role: EProjectRole.visitor,
   });
+  // Set new row index
+  memberTable.value?.setRowIndex(members.value.length - 1);
 }
 </script>

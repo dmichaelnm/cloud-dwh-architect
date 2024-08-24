@@ -3,6 +3,7 @@
   <editor-page
     ref="editorPage"
     :scope="EFSDocumentType.project"
+    :no-cancel="noCancel"
     :components="[
       { key: 'members', label: $t('project.editor.tab.members') },
       { key: 'attributes', label: $t('label.attributes') },
@@ -11,7 +12,12 @@
   >
     <!-- Template: Project Members -->
     <template #tab-members>
-      <project-member :mode="editorPage?.mode" />
+      <project-member />
+    </template>
+
+    <!-- Template: Customs Attribute -->
+    <template #tab-attributes>
+      <customs-attribute-table />
     </template>
   </editor-page>
 </template>
@@ -19,15 +25,23 @@
 <script setup lang="ts">
 import EditorPage from 'components/application/main/EditorPage.vue';
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
-import { EEditorMode } from 'src/scripts/utilities/common';
+import * as cm from 'src/scripts/utilities/common';
 import ProjectMember from 'pages/application/project/ProjectMember.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import CustomsAttributeTable from 'components/application/main/CustomsAttributeTable.vue';
 
+// Get common composables
+const cmp = cm.useCommonComposables();
 // Reference to editor page
 const editorPage = ref<typeof EditorPage | null>(null);
 
+/** Flag for no canceling option */
+const noCancel = computed(() => {
+  return cmp.session.projects.length === 0;
+});
+
 async function submit(
-  mode: EEditorMode,
+  mode: cm.EEditorMode,
   name: string,
   description: string | null
 ): Promise<void> {

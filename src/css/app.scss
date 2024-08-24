@@ -147,12 +147,22 @@ body.body--dark {
 .q-field--outlined.q-field--readonly .q-field__control:before {
   border-style: solid;
 }
+
+.q-field__native {
+  letter-spacing: 0;
+}
+
 // ============================================================================
 // Table
 // ============================================================================
 
 .q-table {
   border-collapse: collapse;
+  color: $light-text-highlight;
+}
+
+.body--dark .q-table {
+  color: $dark-text-highlight;
 }
 
 .q-table thead, .q-table tr, .q-table th, .q-table td {
@@ -170,6 +180,23 @@ body.body--dark {
 .q-table--dark tr td {
   border-color: $dark-frame;
 }
+
+// ============================================================================
+// Inline Editor
+// ============================================================================
+
+div.q-menu.q-position-engine.scroll.q-popup-edit {
+  background-color: $light-background-frame;
+  border: 0;
+  box-shadow: 0 0;
+  padding: 0 0;
+  font-size: 13px;
+}
+
+.body--dark div.q-menu.q-position-engine.scroll.q-popup-edit {
+  background-color: $dark-background-frame;
+}
+
 // ============================================================================
 // Footer
 // ============================================================================

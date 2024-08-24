@@ -58,7 +58,7 @@ export default {
       // Developer
       developer: 'Entwickler',
       // Visitor
-      vistor: 'Besucher',
+      visitor: 'Besucher',
     },
   },
 
@@ -242,11 +242,21 @@ export default {
         // Role
         role: 'Rolle',
       },
+      // Tooltip Messages
+      tooltip: {
+        // Add Button
+        add: 'Neues Mitglied hinzufügen',
+        // Delete Button
+        remove: 'Mitglied entfernen'
+      },
       // Error Messages
       error: {
         // Manager cannot be a team member
-        alreadyMember:
-          'Das gewählte Konto ist bereits ein Team-Mitglied.',
+        alreadyMember: 'Das gewählte Konto ist bereits ein Team-Mitglied.',
+        // Team member cannot be the owner
+        notOwner: 'Der Eigentümer kann nicht gleichzeitig Team-Mitglied sein.',
+        // Team member cannot be the manager
+        notManager: 'Der Projektleiter kann nicht gleichzeitig Team-Mitglied sein.',
       },
     },
   },

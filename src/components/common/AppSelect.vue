@@ -1,14 +1,19 @@
 <template>
   <!-- Select Component -->
   <q-select
+    ref="select"
     :model-value="internalValue"
     :options="options"
     dense
     options-dense
     map-options
     emit-value
+    stack-label
+    :label="label"
+    :autocomplete="autoComplete"
     :borderless="borderless"
     :outlined="!borderless"
+    :hide-bottom-space="hideBottomSpace"
     @update:modelValue="(value) => (internalValue = value)"
   >
     <!-- Template for the icon of the select component -->
@@ -38,9 +43,9 @@
         <!-- Option Item Label Section -->
         <q-item-section>
           <!-- Option Item Label -->
-          <q-item-label>{{
-            translate ? $t(props.opt.label) : props.opt.label
-          }}</q-item-label>
+          <q-item-label
+            >{{ translate ? $t(props.opt.label) : props.opt.label }}
+          </q-item-label>
         </q-item-section>
       </q-item>
     </template>
@@ -48,8 +53,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { TSelectOption } from 'src/scripts/utilities/common';
+import { QSelect } from 'quasar';
+
+// Select component reference
+const select = ref<QSelect | null>(null);
 
 /** Defines the properties of this component */
 const props = defineProps<{
@@ -67,6 +76,12 @@ const props = defineProps<{
   showOptionIcon?: boolean;
   /** Flag for showinf the icon space in an option even if there is no icon */
   showEmptyIcon?: boolean;
+  /** Flag for hiding the bottom space */
+  hideBottomSpace?: boolean;
+  /** Auto Complete attribute */
+  autoComplete?: string;
+  /** Label of the selection component */
+  label?: string;
 }>();
 
 /** Defines the events that can be emitted by this component */
@@ -87,4 +102,14 @@ const internalValue = computed({
 const selectedOption = computed(() => {
   return props.options.find((opt) => opt.value === internalValue.value);
 });
+
+/**
+ * Shows the options list of this selection component.
+ */
+function showPopup(): void {
+  select.value?.showPopup();
+}
+
+/** Exposes methods of this component */
+defineExpose({ showPopup });
 </script>

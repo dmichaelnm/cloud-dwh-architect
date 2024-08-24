@@ -17,7 +17,7 @@
             <app-button :label="$t('button.save')" type="submit" />
             <!-- Cancel Button -->
             <app-button
-              v-if="cancelable"
+              v-if="!noCancel"
               :label="$t('button.cancel')"
               color="sbutton"
             />
@@ -129,9 +129,7 @@ const cmp = cm.useCommonComposables();
 const runTask = useRunTask();
 
 // Get the editor mode
-const mode = cmp.session.editor?.mode as cm.EEditorMode;
-// Is the editor cancelable
-const cancelable = cmp.session.editor?.cancelable as boolean;
+const mode = cmp.route.params.mode as cm.EEditorMode;
 
 /** Defines the properties of this component */
 const props = defineProps<{
@@ -139,6 +137,8 @@ const props = defineProps<{
   scope: EFSDocumentType;
   /** Component keys */
   components: cm.TTabDefinition[];
+  /** Flag for no canceling option */
+  noCancel?: boolean;
   /** Submit Handler function */
   submit: (
     mode: cm.EEditorMode,
@@ -162,5 +162,4 @@ function submitForm(): void {
     await props.submit(mode, name.value, description.value);
   });
 }
-
 </script>

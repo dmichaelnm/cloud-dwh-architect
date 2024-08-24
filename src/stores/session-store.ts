@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { Account } from 'src/scripts/application/Account';
 import { Project } from 'src/scripts/application/Project';
-import { EEditorMode } from 'src/scripts/utilities/common';
 
 export const useSessionStore = defineStore('session', {
   state: () => ({
@@ -9,30 +8,41 @@ export const useSessionStore = defineStore('session', {
     account: null as Account | null,
     /** The list of projects of the current user */
     projects: [] as Project[],
-    /** Routing information to an editor page */
-    editor: null as {
-      mode: EEditorMode;
-      id: string | undefined;
-      cancelable: boolean;
-    } | null,
   }),
   getters: {
     /**
-     * Returns the account object assuming there is an authorized account.
+     * Retrieves the current account.
      *
-     * @returns {Account} The authorized account.
+     * @return {Account} The current account.
      */
     currentAccount(): Account {
       return this.account as Account;
     },
     /**
-     * Returns the name of the current account.
+     * Retrieves the name of the current account.
      *
-     * @return {string} The name of the current account, or an empty string if the account is null.
+     * @returns {string} The name of the current account, or an empty string if no account is available.
      */
     currentAccountName(): string {
-      return this.account != null ? this.account.data.common.name : '';
+      return this.account ? this.account.data.common.name : '';
     },
   },
-  actions: {},
+  actions: {
+    /**
+     * Sets the account for this session.
+     *
+     * @param {Account} account - The account to be set.
+     */
+    setAccount(account: Account) {
+      this.account = account;
+    },
+    /**
+     * Sets the project list.
+     *
+     * @param {Project[]} projects - An array of Project objects representing the new project list.
+     */
+    setProjectList(projects: Project[]) {
+      this.projects = projects;
+    },
+  },
 });

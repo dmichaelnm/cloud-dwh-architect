@@ -62,13 +62,19 @@
               <q-td :props="props">
                 <!-- Custom Column Value -->
                 <div
-                  v-if="getInputType(col, props.row) !== EInputType.checkbox"
+                  v-if="getInputType(col, props.row) !== cm.EInputType.checkbox"
+                  :class="
+                    col.input === cm.EInputType.select ||
+                    col.input === cm.EInputType.text
+                      ? 'editable-value'
+                      : ''
+                  "
                 >
                   {{ props.value }}
                 </div>
                 <!-- Custom Column Checkbox -->
                 <div
-                  v-if="getInputType(col, props.row) === EInputType.checkbox"
+                  v-if="getInputType(col, props.row) === cm.EInputType.checkbox"
                 >
                   <!-- Editable Checkbox -->
                   <q-checkbox
@@ -79,6 +85,32 @@
                   <!-- Readonly Checkbox -->
                   <q-icon name="check" v-if="readOnly && props.row[col.name]" />
                 </div>
+                <!-- Popup Edit: Selection -->
+                <q-popup-edit
+                  :ref="`pe_${col.name}_${props.rowIndex}`"
+                  v-model="props.row[col.name]"
+                  v-if="
+                    !readOnly &&
+                    getInputType(col, props.row) === cm.EInputType.select
+                  "
+                  v-slot="scope"
+                  anchor="center middle"
+                  @show="(<typeof AppSelect>$refs.select).showPopup()"
+                >
+                  <!-- Inline Select -->
+                  <app-select
+                    ref="select"
+                    class="inline-editor"
+                    v-model="scope.value"
+                    :options="col.options as cm.TSelectOption[]"
+                    :translate="col.translate"
+                    :show-option-icon="col.showOptionIcon"
+                    :label="col.label"
+                    hide-bottom-space
+                    @update:modelValue="value => onValueUpdated(props.rowIndex, col.name, value,
+                                                              <QPopupEdit>$refs[`pe_${col.name}_${props.rowIndex}`])"
+                  />
+                </q-popup-edit>
               </q-td>
             </slot>
           </template>
@@ -88,13 +120,24 @@
     <!-- Table Control Button Row -->
     <div class="row" v-if="!readOnly">
       <!-- Table Control Button Column -->
-      <div class="col q-gutter-x-md">
+      <div class="col q-gutter-x-xs">
         <!-- Add Row Button -->
         <app-button
           v-if="handlerAdd"
           appearance="icon"
           icon="add"
+          size="sm"
+          :tooltip="tooltipAdd"
           @click="handlerAdd"
+        />
+        <!-- Remove Row Button -->
+        <app-button
+          v-if="deletable && rows.length > 0"
+          appearance="icon"
+          icon="remove"
+          size="sm"
+          :tooltip="tooltipRemove"
+          @click="deleteRow"
         />
       </div>
     </div>
@@ -124,19 +167,32 @@
 .table-header {
   color: $dark-text-header;
 }
+
+// Inline Editor
+.inline-editor {
+  font-size: 13px;
+}
+
+// Editable Value
+.editable-value {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
 </style>
 
 <script setup lang="ts">
-import { EInputType, TTableColumn } from 'src/scripts/utilities/common';
+import * as cm from 'src/scripts/utilities/common';
 import { computed, ref } from 'vue';
 import AppButton from 'components/common/AppButton.vue';
+import AppSelect from 'components/common/AppSelect.vue';
+import { QPopupEdit } from 'quasar';
 
 /** Defines the properties of this component */
 const props = defineProps<{
   /** The rows to be shown in the table */
   rows: any[];
   /** Array of table column definitions */
-  columns: TTableColumn[];
+  columns: cm.TTableColumn[];
   /** Optional message above the table */
   message?: string;
   /** Optional message shown if the table has no rows */
@@ -157,6 +213,17 @@ const props = defineProps<{
   readOnly?: boolean;
   /** Handler function for adding a row */
   handlerAdd?: () => void;
+  /** Tooltip for the Add button */
+  tooltipAdd?: string;
+  /** Tooltip for the Remove button */
+  tooltipRemove?: string;
+  /** Optional validator function */
+  validator?: (
+    rowIndex: number,
+    columnName: string,
+    oldValue: any,
+    newValue: any
+  ) => boolean;
 }>();
 
 // Row Index
@@ -165,7 +232,7 @@ const rowIndex = ref(-1);
 /** The computed table columns */
 const tableColumns = computed(() => {
   // Array of table column definitions
-  const tableColumns: TTableColumn[] = [];
+  const tableColumns: cm.TTableColumn[] = [];
   // If rows are deletable or moveable, add selection column
   if ((props.deletable || props.moveable) && !props.readOnly) {
     tableColumns.push({
@@ -200,7 +267,7 @@ const tableColumns = computed(() => {
  *
  * @return {EInputType} - The input type.
  */
-function getInputType(column: TTableColumn, row: any): EInputType {
+function getInputType(column: cm.TTableColumn, row: any): cm.EInputType {
   if (typeof column.input === 'function') {
     // Input type is a function that evaluates the input type
     return column.input(row);
@@ -210,7 +277,7 @@ function getInputType(column: TTableColumn, row: any): EInputType {
     return column.input;
   }
   // Return 'none' as default input type
-  return EInputType.none;
+  return cm.EInputType.none;
 }
 
 /**
@@ -219,7 +286,54 @@ function getInputType(column: TTableColumn, row: any): EInputType {
  * @param column - The table column for which to get the slot name.
  * @returns The slot name for the column, in the format "body-cell-{name}".
  */
-function getSlotName(column: TTableColumn): `body-cell-${string}` {
+function getSlotName(column: cm.TTableColumn): `body-cell-${string}` {
   return `body-cell-${column.name}` as unknown as `body-cell-${string}`;
 }
+
+/**
+ * Deletes the current selected row from the list of rows.
+ */
+function deleteRow(): void {
+  if (rowIndex.value >= 0 && rowIndex.value < props.rows.length) {
+    props.rows.splice(rowIndex.value, 1);
+  }
+}
+
+/**
+ * Sets the selected row of this table.
+ *
+ * @param {number} index - The index of the row.
+ */
+function setRowIndex(index: number): void {
+  rowIndex.value = index;
+}
+
+/**
+ * Handles the updated value for a specific cell in the grid.
+ *
+ * @param {number} rowIndex - The index of the row that contains the cell.
+ * @param {string} columnName - The name of the column that contains the cell.
+ * @param {any} newValue - The new value for the cell.
+ * @param {QPopupEdit} [popupEdit] - Optional popup edit control associated with the cell.
+ */
+function onValueUpdated(
+  rowIndex: number,
+  columnName: string,
+  newValue: any,
+  popupEdit?: QPopupEdit | undefined
+): void {
+  // Get the old value
+  const oldValue = props.rows[rowIndex][columnName];
+  // Set the new value
+  props.rows[rowIndex][columnName] = props.validator
+    ? props.validator(rowIndex, columnName, oldValue, newValue)
+    : newValue;
+  // Hide the popup editor
+  if (popupEdit) {
+    popupEdit.hide();
+  }
+}
+
+/** Exposed methods */
+defineExpose({ setRowIndex });
 </script>

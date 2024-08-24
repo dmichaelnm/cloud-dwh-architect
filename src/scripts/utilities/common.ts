@@ -76,6 +76,10 @@ export type TTableColumn = QTableColumn & {
   input?: EInputType | ((row: any) => EInputType);
   /** Options of a select input */
   options?: TSelectOption[];
+  /** Flag for translating the label */
+  translate?: boolean;
+  /** Flag for showing option icon */
+  showOptionIcon?: boolean;
 };
 
 /**
@@ -101,14 +105,12 @@ export function useOpenEditor() {
   return async (
     scope: EFSDocumentType,
     mode: EEditorMode,
-    id?: string,
-    cancelable: boolean = true
+    id: string
   ): Promise<void> => {
-    // Set routing information on session
-    cmp.session.editor = { mode: mode, id: id, cancelable };
     // Route to the editor page
     await cmp.router.push({
-      path: `/${scope}/editor`,
+      name: `${scope}Editor`,
+      params: { mode: mode, id: id },
     });
   };
 }

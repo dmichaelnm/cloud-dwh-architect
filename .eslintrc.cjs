@@ -1,7 +1,7 @@
 module.exports = {
   // https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
   // This option interrupts the configuration hierarchy at this file
-  // Remove this if you have an higher level ESLint config file (it usually happens into a monorepos)
+  // Remove this if you have a higher level ESLint config file (it usually happens into a monorepos)
   root: true,
 
   // https://eslint.vuejs.org/user-guide/#how-to-use-a-custom-parser
@@ -85,6 +85,9 @@ module.exports = {
 
     // Disable warnings when using 'any' type.
     '@typescript-eslint/no-explicit-any': 'off',
+
+    // Disable warning mutating properties
+    'vue/no-mutating-props': 'off',
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'

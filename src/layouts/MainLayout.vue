@@ -201,24 +201,21 @@ onBeforeMount(() => {
   // Register the event listener for changes on the account state of the current user
   onAccountStateChange(async (account) => {
     if (account === null) {
+      // Unlock the screen
+      cmp.quasar.loading.hide();
       // There is no authorized account, redirect to login page
       await cmp.router.push({ path: '/authentication/login' });
     } else {
       // Apply account to the session
-      cmp.session.account = account;
+      cmp.session.setAccount(account);
       // Found authorized account, set dark mode and language
       cmp.quasar.dark.set(account.data.preferences.dark);
       cmp.i18n.locale.value = account.data.preferences.language;
       // Load all projects of the current user
-      cmp.session.projects = await loadProjects();
+      cmp.session.setProjectList(await loadProjects());
       if (cmp.session.projects.length === 0) {
         // If the user has no projects, redirect to new project editor page
-        await openEditor(
-          EFSDocumentType.project,
-          EEditorMode.create,
-          undefined,
-          false
-        );
+        await openEditor(EFSDocumentType.project, EEditorMode.create, 'new');
       }
       // Unlock the screen
       cmp.quasar.loading.hide();

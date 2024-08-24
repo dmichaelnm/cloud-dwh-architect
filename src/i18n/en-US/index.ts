@@ -74,7 +74,7 @@ export default {
       // Developer
       developer: 'Developer',
       // Visitor
-      vistor: 'Visitor',
+      visitor: 'Visitor',
     },
   },
 
@@ -216,30 +216,35 @@ export default {
         // Project Members
         members: 'Project Members',
       },
-      // Project Member Table Messages
-      member: {
-        // Owner & Manager Message
-        ownerMessage:
-          'If you are the project owner, you can specify a project manager here. This manager has all ' +
-          'the permissions that the owner has, except that he cannot specify another project manager. If you do not ' +
-          'want to specify an explicit project manager, you can also appoint yourself as the project manager.',
-        // Table Message
-        message:
-          'Here you can manage the members of your project team. If you want to add a new member, they must ' +
-          'already have a registered account. You can use the role of a member to determine which permissions they ' +
-          'have. Project owners and project managers cannot be selected as members.',
-        // Table Header Messages
-        header: {
-          // Name of the project member
-          name: 'Name of Project Member',
-          // Role
-          role: 'Role',
-        },
-        // Error Messages
-        error: {
-          // Manager cannot be a team member
-          alreadyMember: 'The selected account is already a team member.',
-        },
+    },
+    // Project Member Table Messages
+    member: {
+      // Owner & Manager Message
+      ownerMessage:
+        'If you are the project owner, you can specify a project manager here. This manager has all ' +
+        'the permissions that the owner has, except that he cannot specify another project manager. If you do not ' +
+        'want to specify an explicit project manager, you can also appoint yourself as the project manager.',
+      // Table Message
+      tableMessage:
+        'Here you can manage the members of your project team. If you want to add a new member, they must ' +
+        'already have a registered account. You can use the role of a member to determine which permissions they ' +
+        'have. Project owners and project managers cannot be selected as members.',
+      // Table Header Messages
+      header: {
+        // Name of the project member
+        name: 'Name of Project Member',
+        // Role
+        role: 'Role',
+      },
+      // Error Messages
+      error: {
+        // Manager cannot be a team member
+        alreadyMember: 'The selected account is already a team member.',
+        // Team member cannot be the owner
+        notOwner: 'The owner cannot be a team member at the same time.',
+        // Team member cannot be the manager
+        notManager:
+          'The project manager cannot be a team member at the same time.',
       },
     },
   },
