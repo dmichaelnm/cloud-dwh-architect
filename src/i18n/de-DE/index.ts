@@ -122,6 +122,8 @@ export default {
   error: {
     // Input field must not be empty
     inputEmpty: 'Das Eingabefeld darf nicht leer sein.',
+    // No account selected
+    accountNotSelected: 'Es muss ein Konto ausgewählt sein.'
   },
 
   // Custom Attribute Messages

@@ -8,9 +8,10 @@
     @click="emit('click')"
   >
     <!-- Menu Item Icon Section -->
-    <q-item-section avatar v-if="showIcon">
+    <q-item-section side v-if="showIcon">
       <!-- Menu Item Icon -->
       <q-icon :name="icon" v-if="icon" size="xs" />
+      <q-icon v-if="!icon" size="xs" />
     </q-item-section>
     <!-- Menu Item Label Section -->
     <q-item-section>

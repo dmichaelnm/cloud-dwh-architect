@@ -105,8 +105,11 @@ export function useOpenEditor() {
   return async (
     scope: EFSDocumentType,
     mode: EEditorMode,
-    id: string
+    id: string,
+    resultHandler?: (result: any) => void
   ): Promise<void> => {
+    // Set result handler
+    cmp.session.resultHandler = resultHandler ? resultHandler : null;
     // Route to the editor page
     await cmp.router.push({
       name: `${scope}Editor`,

@@ -25,7 +25,12 @@
               v-model="selectedProjectId"
               @update:model-value="switchProject"
               @project:create="
-                openEditor(EFSDocumentType.project, cm.EEditorMode.create, 'new')
+                openEditor(
+                  EFSDocumentType.project,
+                  cm.EEditorMode.create,
+                  'new',
+                  (project) => selectedProjectId = project.id
+                )
               "
             />
           </div>

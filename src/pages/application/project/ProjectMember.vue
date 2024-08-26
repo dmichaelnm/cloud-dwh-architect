@@ -21,6 +21,7 @@
         <account-selection-field
           v-model="owner"
           :label="$t('enum.memberRole.owner')"
+          :error="ownerError"
           read-only
         />
       </div>
@@ -30,6 +31,7 @@
         <account-selection-field
           v-model="manager"
           :label="$t('enum.memberRole.manager')"
+          :error="managerError"
           :validator="validateManager"
           :read-only="!canChangeManager"
         />
@@ -92,10 +94,12 @@ const cmp = cm.useCommonComposables();
 // Member table reference
 const memberTable = ref<typeof AppEditableTable | null>(null);
 
-// Project owner account
+// Project owner account & error message
 const owner = ref<Account | null>(null);
-// Project manager account
+const ownerError = ref<string | null>(null);
+// Project manager account & error message
 const manager = ref<Account | null>(null);
+const managerError = ref<string | null>(null);
 // Array of project members
 const members = ref<TProjectMember[]>([]);
 // Flag for changing the manager
@@ -205,6 +209,30 @@ function getProjectMembers(): TProjectMember[] {
   return members.value as TProjectMember[];
 }
 
+/**
+ * Validates the values of the owner and manager properties.
+ *
+ * @return {boolean} - Returns true if both owner and manager values are not null, false otherwise.
+ */
+function validate(): boolean {
+  // Validation result
+  let result = true;
+  // Check owner
+  if (owner.value === null) {
+    // Set error message
+    ownerError.value = cmp.i18n.t('error.accountNotSelected');
+    result = false;
+  }
+  // Check manager
+  if (manager.value === null) {
+    // Set error message
+    managerError.value = cmp.i18n.t('error.accountNotSelected');
+    result = false;
+  }
+  // Return the result
+  return result;
+}
+
 /** Exposed methods */
-defineExpose({ getOwner, getManager, getProjectMembers });
+defineExpose({ getOwner, getManager, getProjectMembers, validate });
 </script>

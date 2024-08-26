@@ -7,6 +7,7 @@
       { key: 'members', label: $t('project.editor.tab.members') },
       { key: 'attributes', label: $t('label.attributes') },
     ]"
+    :validate="validate"
     :submit="submit"
   >
     <!-- Template: Project Members -->
@@ -40,6 +41,16 @@ const memberComponent = ref<typeof ProjectMember | null>(null);
 // Reference to the custom attributes table
 const attributesTable = ref<typeof CustomsAttributeTable | null>(null);
 
+/**
+ * Validates the project member component.
+ *
+ * @return {boolean} Returns `true` if the validation is successful, otherwise `false`.
+ */
+function validate(): boolean {
+  // Validate project member component
+  return memberComponent.value?.validate();
+}
+
 async function submit(
   mode: cm.EEditorMode,
   name: string,
@@ -61,6 +72,8 @@ async function submit(
     // Update new project of current account
     cmp.session.currentAccount.data.state.activeProjectId = project.id;
     await cmp.session.currentAccount.update();
+    // Call result handler
+    cmp.session.invokeResultHandler(project);
     // Return router target
     return '/';
   }

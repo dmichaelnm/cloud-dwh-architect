@@ -12,6 +12,8 @@
     :label="label"
     :outlined="!readOnly"
     :borderless="readOnly"
+    :error="error !== undefined && error !== null && error.length > 0"
+    :error-message="error !== null ? error : undefined"
     dense
     readonly
     stack-label
@@ -50,6 +52,8 @@ const props = defineProps<{
   readOnly?: boolean;
   /** Custom validator function */
   validator?: (account: Account) => string | null;
+  /** Optional error message */
+  error?: string | null;
 }>();
 
 /** Defines the events that can be emitted by this component */

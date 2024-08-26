@@ -8,6 +8,8 @@ export const useSessionStore = defineStore('session', {
     account: null as Account | null,
     /** The list of projects of the current user */
     projects: [] as Project[],
+    /** Result handler function for routing results */
+    resultHandler: null as ((result: any) => void) | null,
   }),
   getters: {
     /**
@@ -77,5 +79,19 @@ export const useSessionStore = defineStore('session', {
     getProject(projectId: string | null): Project | null {
       return this.projects.find((project) => project.id === projectId) || null;
     },
+    /**
+     * Invokes the result handler function with the given result.
+     *
+     * @param result - The result to be passed to the result handler.
+     */
+    invokeResultHandler(result: any): void {
+      // Check if result handler is specified
+      if (this.resultHandler !== null) {
+        // Invoke the result handler
+        this.resultHandler(result);
+        // Reset result handler
+        this.resultHandler = null;
+      }
+    }
   },
 });

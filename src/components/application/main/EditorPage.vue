@@ -137,7 +137,9 @@ const props = defineProps<{
   scope: EFSDocumentType;
   /** Component keys */
   components: cm.TTabDefinition[];
-  /** Submit Handler function */
+  /** Validate handler function */
+  validate?: () => boolean;
+  /** Submit handler function */
   submit: (
     mode: cm.EEditorMode,
     name: string,
@@ -167,15 +169,23 @@ function cancelEditor(target: string | void): void {
 }
 
 /**
- * Submits the form by calling a submit handler function asynchronously.
+ * Submits the form.
+ *
+ * This method is used to submit the form of the editor page.
+ * It calls the validation function if specified and then starts the submit process.
+ * If the validation passes, it runs the submit handler function and closes the editor.
  */
 function submitForm(): void {
-  // Start the submit process
-  runTask(async () => {
-    // Run the submit handler function
-    const target = await props.submit(mode, name.value, description.value);
-    // Close the editor
-    cancelEditor(target);
-  });
+  // Call validation if specified
+  const validated = props.validate ? props.validate() : true;
+  if (validated) {
+    // Start the submit process
+    runTask(async () => {
+      // Run the submit handler function
+      const target = await props.submit(mode, name.value, description.value);
+      // Close the editor
+      cancelEditor(target);
+    });
+  }
 }
 </script>

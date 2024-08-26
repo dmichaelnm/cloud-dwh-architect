@@ -13,15 +13,21 @@
       <q-list dense padding>
         <!-- Project Overview -->
         <app-menu-item
+          class="project-action"
           clickable
           closeable
+          icon="toc"
+          show-icon
           :label="$t('project.button.overview')"
           @click="emit('project:overview')"
         />
         <!-- Create Project -->
         <app-menu-item
+          class="project-action"
           clickable
           closeable
+          icon="add"
+          show-icon
           :label="$t('project.button.create')"
           @click="emit('project:create')"
         />
@@ -33,6 +39,7 @@
           :key="prj.id"
           clickable
           closeable
+          show-icon
           :label="prj.data.common.name"
           @click="() => (internal = prj.id)"
         />
@@ -43,6 +50,11 @@
 
 <style lang="scss" scoped>
 @import 'src/css/quasar.variables';
+
+// Project Action
+.project-action {
+  font-style: italic;
+}
 
 // Project Button
 .project-button {

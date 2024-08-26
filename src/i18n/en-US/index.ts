@@ -122,6 +122,8 @@ export default {
   error: {
     // Input field must not be empty
     inputEmpty: 'The input field must not be empty.',
+    // No account selected
+    accountNotSelected: 'An account must be selected.'
   },
 
   // Custom Attribute Messages
@@ -282,6 +284,13 @@ export default {
         name: 'Name of Project Member',
         // Role
         role: 'Role',
+      },
+      // Tooltip Messages
+      tooltip: {
+        // Add Button
+        add: 'Add New Member',
+        // Delete Button
+        remove: 'Remove Member',
       },
       // Error Messages
       error: {
