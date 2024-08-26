@@ -33,21 +33,24 @@
     </template>
     <!-- Template for select option -->
     <template #option="props">
-      <!-- Option Item -->
-      <q-item dense clickable v-close-popup v-bind="props.itemProps">
-        <!-- Option Item Icon Section -->
-        <q-item-section avatar v-if="showEmptyIcon || props.opt.icon">
-          <!-- Option Item Icon -->
-          <q-icon :name="props.opt.icon" v-if="props.opt.icon" size="sm" />
-        </q-item-section>
-        <!-- Option Item Label Section -->
-        <q-item-section>
-          <!-- Option Item Label -->
-          <q-item-label
-            >{{ translate ? $t(props.opt.label) : props.opt.label }}
-          </q-item-label>
-        </q-item-section>
-      </q-item>
+      <!-- Slot -->
+      <slot name="option" v-bind="props">
+        <!-- Option Item -->
+        <q-item dense clickable v-close-popup v-bind="props.itemProps">
+          <!-- Option Item Icon Section -->
+          <q-item-section avatar v-if="showEmptyIcon || props.opt.icon">
+            <!-- Option Item Icon -->
+            <q-icon :name="props.opt.icon" v-if="props.opt.icon" size="sm" />
+          </q-item-section>
+          <!-- Option Item Label Section -->
+          <q-item-section>
+            <!-- Option Item Label -->
+            <q-item-label
+              >{{ translate ? $t(props.opt.label) : props.opt.label }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </slot>
     </template>
   </q-select>
 </template>

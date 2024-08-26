@@ -116,12 +116,12 @@
 </style>
 
 <script setup lang="ts">
-import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 import * as cm from 'src/scripts/utilities/common';
-import AppButton from 'components/common/AppButton.vue';
 import { ref } from 'vue';
-import AppInput from 'components/common/AppInput.vue';
 import { useRunTask } from 'src/scripts/utilities/runTask';
+import { EFSDocumentType } from 'src/scripts/application/FSDocument';
+import AppButton from 'components/common/AppButton.vue';
+import AppInput from 'components/common/AppInput.vue';
 
 // Get common composables
 const cmp = cm.useCommonComposables();
@@ -142,7 +142,7 @@ const props = defineProps<{
     mode: cm.EEditorMode,
     name: string,
     description: string | null
-  ) => Promise<void>;
+  ) => Promise<void | string>;
 }>();
 
 // Current tab name
@@ -156,9 +156,14 @@ const description = ref<string | null>(null);
 /**
  * Cancels the editor and navigates back.
  */
-function cancelEditor(): void {
-  // Go back
-  cmp.router.back();
+function cancelEditor(target: string | void): void {
+  if (typeof target === 'string') {
+    // Route to specific target
+    cmp.router.push({ path: target });
+  } else {
+    // Go back
+    cmp.router.back();
+  }
 }
 
 /**
@@ -168,7 +173,9 @@ function submitForm(): void {
   // Start the submit process
   runTask(async () => {
     // Run the submit handler function
-    await props.submit(mode, name.value, description.value);
+    const target = await props.submit(mode, name.value, description.value);
+    // Close the editor
+    cancelEditor(target);
   });
 }
 </script>

@@ -29,7 +29,7 @@
         label: $t('customAttribute.header.value'),
         align: 'left',
         input: (row) =>
-          row.type === ECustomAttributeType.boolean
+          row.type === fs.ECustomAttributeType.boolean
             ? EInputType.checkbox
             : EInputType.text,
         field: (row) => row.value,
@@ -47,12 +47,11 @@
 </template>
 
 <script setup lang="ts">
-import AppEditableTable from 'components/common/AppEditableTable.vue';
-import { ref } from 'vue';
 import * as fs from 'src/scripts/application/FSDocument';
-import { ECustomAttributeType } from 'src/scripts/application/FSDocument';
+import { ref } from 'vue';
 import { EInputType, toBoolean, toNumber } from 'src/scripts/utilities/common';
 import { attributeTypes } from 'src/scripts/options/attributeTypes';
+import AppEditableTable from 'components/common/AppEditableTable.vue';
 
 // Table reference
 const table = ref<typeof AppEditableTable | null>(null);
@@ -120,14 +119,14 @@ function validateAttribute(
   // Check the type column
   else if (columnName === 'type') {
     // Get the type
-    const type = newValue as ECustomAttributeType;
+    const type = newValue as fs.ECustomAttributeType;
     // Check string type
-    if (type === ECustomAttributeType.string) {
+    if (type === fs.ECustomAttributeType.string) {
       attributes.value[rowIndex].value =
         attributes.value[rowIndex].value.toString();
     }
     // Check number type
-    else if (type === ECustomAttributeType.number) {
+    else if (type === fs.ECustomAttributeType.number) {
       const value = toNumber(attributes.value[rowIndex].value);
       if (value === null) {
         attributes.value[rowIndex].value = 0;
@@ -136,7 +135,7 @@ function validateAttribute(
       }
     }
     // Check boolean type
-    else if (type === ECustomAttributeType.boolean) {
+    else if (type === fs.ECustomAttributeType.boolean) {
       attributes.value[rowIndex].value = toBoolean(
         attributes.value[rowIndex].value
       );
@@ -147,7 +146,7 @@ function validateAttribute(
     // Get the type
     const type = attributes.value[rowIndex].type;
     // Check number type
-    if (type === ECustomAttributeType.number) {
+    if (type === fs.ECustomAttributeType.number) {
       const value = toNumber(newValue);
       newValue = value !== null ? value : oldValue;
     }
@@ -155,4 +154,16 @@ function validateAttribute(
   // Return the new value
   return newValue;
 }
+
+/**
+ * Retrieves the array of the custom attributes.
+ *
+ * @return {TCustomAttribute[]} An array of custom attributes.
+ */
+function getAttributes(): fs.TCustomAttribute[] {
+  return attributes.value;
+}
+
+/** Exposed methods */
+defineExpose({ getAttributes });
 </script>

@@ -37,12 +37,45 @@ export const useSessionStore = defineStore('session', {
       this.account = account;
     },
     /**
+     * Adds a project to the project list.
+     *
+     * @param {Project} project - The project to be added.
+     */
+    addProject(project: Project) {
+      // Add project
+      this.projects.push(project);
+      // Sort project list
+      this.sortProjects();
+    },
+    /**
      * Sets the project list.
      *
      * @param {Project[]} projects - An array of Project objects representing the new project list.
      */
     setProjectList(projects: Project[]) {
+      // Apply projects
       this.projects = projects;
+      // Sort projects
+      this.sortProjects();
+    },
+    /**
+     * Sorts the projects in ascending order based on their common name.
+     */
+    sortProjects(): void {
+      this.projects.sort((a: Project, b: Project) =>
+        a.data.common.name.localeCompare(b.data.common.name)
+      );
+    },
+    /**
+     * Retrieves a project by its unique identifier.
+     *
+     * @param {string | null} projectId - The unique identifier of the project.
+     *
+     * @return {Project | null} - The project matching the provided identifier,
+     *                            or null if no match is found.
+     */
+    getProject(projectId: string | null): Project | null {
+      return this.projects.find((project) => project.id === projectId) || null;
     },
   },
 });

@@ -78,14 +78,14 @@
 </template>
 
 <script setup lang="ts">
-import AppEditableTable from 'components/common/AppEditableTable.vue';
-import { EProjectRole, TProjectMember } from 'src/scripts/application/Project';
-import { onBeforeMount, ref } from 'vue';
 import * as cm from 'src/scripts/utilities/common';
-import AccountSelectionField from 'components/application/account/AccountSelectionField.vue';
+import { onBeforeMount, ref } from 'vue';
 import { Account } from 'src/scripts/application/Account';
-import AccountSelectionDialog from 'components/application/account/AccountSelectionDialog.vue';
+import { EProjectRole, TProjectMember } from 'src/scripts/application/Project';
 import { memberRoles } from 'src/scripts/options/memberRoles';
+import AccountSelectionField from 'components/application/account/AccountSelectionField.vue';
+import AccountSelectionDialog from 'components/application/account/AccountSelectionDialog.vue';
+import AppEditableTable from 'components/common/AppEditableTable.vue';
 
 // Get common composables
 const cmp = cm.useCommonComposables();
@@ -169,4 +169,42 @@ function addMember(account: Account): void {
   // Set new row index
   memberTable.value?.setRowIndex(members.value.length - 1);
 }
+
+/**
+ * Retrieves the owner of the project.
+ *
+ * @return {TProjectMember} The project owner.
+ */
+function getOwner(): TProjectMember {
+  return {
+    id: owner.value?.id as string,
+    name: owner.value?.data.common.name as string,
+    role: EProjectRole.owner,
+  };
+}
+
+/**
+ * Returns the manager for the project.
+ *
+ * @return {TProjectMember} The project manager.
+ */
+function getManager(): TProjectMember {
+  return {
+    id: manager.value?.id as string,
+    name: manager.value?.data.common.name as string,
+    role: EProjectRole.manager,
+  };
+}
+
+/**
+ * Retrieves the members of a project.
+ *
+ * @return {TProjectMember[]} An array of project members.
+ */
+function getProjectMembers(): TProjectMember[] {
+  return members.value as TProjectMember[];
+}
+
+/** Exposed methods */
+defineExpose({ getOwner, getManager, getProjectMembers });
 </script>

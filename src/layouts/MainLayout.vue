@@ -14,6 +14,21 @@
               >{{ $t('application.title') }}
             </q-toolbar-title>
           </div>
+          <!-- Project Selection Column -->
+          <div
+            class="col-auto"
+            style="margin-left: 48px"
+            v-if="cmp.session.projects.length > 0"
+          >
+            <!-- Project Selection -->
+            <project-selection
+              v-model="selectedProjectId"
+              @update:model-value="switchProject"
+              @project:create="
+                openEditor(EFSDocumentType.project, cm.EEditorMode.create, 'new')
+              "
+            />
+          </div>
           <!-- Space Column -->
           <div class="col-grow" />
           <!-- Account Name & Role -->
@@ -28,7 +43,7 @@
               <!-- Account Menu -->
               <q-menu :style="{ width: '200px' }">
                 <!-- Account Menu List -->
-                <q-list>
+                <q-list padding>
                   <!-- Dark Mode Button -->
                   <app-menu-item
                     clickable
@@ -174,7 +189,7 @@
 
 <script setup lang="ts">
 import * as cm from 'src/scripts/utilities/common';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { onAccountStateChange } from 'src/scripts/application/Account';
 import { versionInfo } from 'src/scripts/config/version';
 import { logout } from 'src/scripts/utilities/firebase';
@@ -183,9 +198,16 @@ import { loadProjects } from 'src/scripts/application/Project';
 import AppButton from 'components/common/AppButton.vue';
 import AppMenuItem from 'components/common/AppMenuItem.vue';
 import SocialMediaLinks from 'components/application/SocialMediaLinks.vue';
+import ProjectSelection from 'components/application/project/ProjectSelection.vue';
+import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 
 // Get common composables
 const cmp = cm.useCommonComposables();
+// Get open editor composable
+const openEditor = cm.useOpenEditor();
+
+// Selected project ID
+const selectedProjectId = ref<string | null>(null);
 
 /** Lifecycle method that is called before this component is mounted */
 onBeforeMount(() => {
@@ -209,6 +231,9 @@ onBeforeMount(() => {
       if (cmp.session.projects.length === 0) {
         // If the user has no projects, redirect to "No Project" page
         await cmp.router.push({ path: '/project/first' });
+      } else {
+        // Switch to the active project
+        await switchProject(account.data.state.activeProjectId);
       }
       // Unlock the screen
       cmp.quasar.loading.hide();
@@ -247,6 +272,20 @@ function switchLanguage(value: string): void {
   // Update the account
   cmp.session.currentAccount.data.preferences.language = value;
   cmp.session.currentAccount.update();
+}
+
+async function switchProject(projectId: string | null): Promise<void> {
+  // Get project for specified ID
+  let project = cmp.session.getProject(projectId);
+  if (project === null) {
+    // Project ID is unknown, take first project in list instead
+    project = cmp.session.projects.length > 0 ? cmp.session.projects[0] : null;
+  }
+  // Update active project on account
+  selectedProjectId.value = project !== null ? project.id : null;
+  const account = cmp.session.currentAccount;
+  account.data.state.activeProjectId = selectedProjectId.value;
+  await account.update();
 }
 
 /**

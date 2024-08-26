@@ -35,6 +35,8 @@ export interface IAccountData extends fs.IFSDocumentData {
     locked: boolean;
     /** The timestamp of the last login */
     lastLogin: Timestamp | null;
+    /** Active project ID */
+    activeProjectId: string | null;
   };
 }
 
@@ -129,7 +131,7 @@ export async function createAccount(
     common: { name: `${firstName} ${lastName}`, description: null },
     profile: { firstName: firstName, lastName: lastName, email: email },
     preferences: { dark: dark, language: language },
-    state: { locked: true, lastLogin: null },
+    state: { locked: true, lastLogin: null, activeProjectId: null },
   };
   // Create the account document
   return await createDocument<IAccountData, Account>(

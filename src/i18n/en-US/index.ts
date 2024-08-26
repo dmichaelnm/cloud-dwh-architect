@@ -235,7 +235,9 @@ export default {
     // Button Labels
     button: {
       // Create New Project
-      create: 'New Project'
+      create: 'New Project',
+      // Overview
+      overview: 'Project Overview'
     },
     // General Project Messages
     message: {
