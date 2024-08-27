@@ -10,6 +10,8 @@ export const useSessionStore = defineStore('session', {
     projects: [] as Project[],
     /** Result handler function for routing results */
     resultHandler: null as ((result: any) => void) | null,
+    /** Flag for the editor lock */
+    editorLock: false as boolean
   }),
   getters: {
     /**

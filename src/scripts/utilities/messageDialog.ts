@@ -98,6 +98,22 @@ export function useMessageDialog(): {
       | ((value: string) => boolean | void | Promise<boolean> | Promise<void>)
       | null
   ) => void;
+  /**
+   * Displays a confirmation dialog to the user.
+   *
+   * @param {string} title - The title of the confirmation dialog.
+   * @param {string} message - The message to display in the confirmation dialog.
+   * @param {string | null} details - Additional details to display in the confirmation dialog, can be null.
+   * @param {(confirmed: boolean) => void | Promise<void>} handler - A callback function to be executed when the user confirms or cancels the dialog.
+   *   - The `confirmed` parameter indicates whether the user confirmed the dialog (true) or canceled it (false).
+   *   - The callback function can optionally return a Promise if additional async operations need to be performed.
+   */
+  showConfirmationDialog: (
+    title: string,
+    message: string,
+    details: string | null,
+    handler: (confirmed: boolean) => void | Promise<void>
+  ) => void;
 } {
   return {
     // Return the message dialog options
@@ -157,6 +173,29 @@ export function useMessageDialog(): {
         { value: 'close', label: 'button.close' },
       ];
       messageDialogOptions.value.handler = handler;
+      messageDialogOptions.value.visibility = true;
+    },
+    // Returns the "showConfirmationDialog" function
+    showConfirmationDialog: (
+      title: string,
+      message: string,
+      details: string | null,
+      handler: (confirmed: boolean) => void | Promise<void>
+    ) => {
+      messageDialogOptions.value.title = title;
+      messageDialogOptions.value.message = message;
+      messageDialogOptions.value.details = details;
+      messageDialogOptions.value.color = 'primary';
+      messageDialogOptions.value.buttons = [
+        { value: 'okay', label: 'button.okay' },
+        { value: 'cancel', label: 'button.cancel', color: 'sbutton' },
+      ];
+      messageDialogOptions.value.handler = (value: string) => {
+        // Call the confirmation handler
+        handler(value === 'okay');
+        // Close the dialog
+        return true;
+      };
       messageDialogOptions.value.visibility = true;
     },
   };

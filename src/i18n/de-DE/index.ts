@@ -116,6 +116,13 @@ export default {
       // Unknown email address
       unknownEmail: 'Die Email-Adresse ist unbekannt.',
     },
+    // Discard Changes Dialog
+    discardChanges: {
+      // Title
+      title: 'Änderungen verwerfen?',
+      // Message
+      message: 'Wollen Sie die bisher in diesem Editor vorgenommenen Änderungen wirklich verwerfen?'
+    }
   },
 
   // Common Error Messages

@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { QTableColumn, useQuasar } from 'quasar';
 import { useSessionStore } from 'stores/session-store';
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
+import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
 
 /**
  * Represents the available modes for an editor.
@@ -110,11 +111,50 @@ export function useOpenEditor() {
   ): Promise<void> => {
     // Set result handler
     cmp.session.resultHandler = resultHandler ? resultHandler : null;
+    // Lock editor
+    cmp.session.editorLock = true;
     // Route to the editor page
     await cmp.router.push({
       name: `${scope}Editor`,
       params: { mode: mode, id: id },
     });
+  };
+}
+
+/**
+ * Returns a composable function that can be used to navigate to a specified route path.
+ */
+export function useRouteTo() {
+  // Get common composables
+  const cmp = useCommonComposables();
+  // Get confirmation dialog composable
+  const { showConfirmationDialog } = useMessageDialog();
+  // Return the composable
+  return async (
+    path: string,
+    checkEditorLock: boolean = true
+  ): Promise<void> => {
+    // Check the editor if necessary
+    if (checkEditorLock && cmp.session.editorLock) {
+      console.debug('Editor is locked');
+      // Editor is locked, show confirmation dialog
+      showConfirmationDialog(
+        cmp.i18n.t('dialog.discardChanges.title'),
+        cmp.i18n.t('dialog.discardChanges.message'),
+        null,
+        (confirmed) => {
+          if (confirmed) {
+            // Reset editor lock
+            cmp.session.editorLock = false;
+            // Route to target path
+            cmp.router.push({ path: path });
+          }
+        }
+      );
+    } else {
+      // Route to target path
+      await cmp.router.push({ path: path });
+    }
   };
 }
 
@@ -145,7 +185,7 @@ export function toBoolean(value: any): boolean {
     return value as boolean;
   } else if (typeof value === 'string') {
     const str = (value as string).trim().toLowerCase();
-    return (str === 'true' || str === '1');
+    return str === 'true' || str === '1';
   } else if (typeof value === 'number') {
     const nmbr = value as number;
     return nmbr > 0;

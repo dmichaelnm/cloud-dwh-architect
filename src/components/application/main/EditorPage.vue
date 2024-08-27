@@ -19,7 +19,7 @@
             <app-button
               :label="$t('button.cancel')"
               color="sbutton"
-              @click="cancelEditor"
+              @click="closeEditor"
             />
           </div>
         </div>
@@ -156,9 +156,11 @@ const name = ref('');
 const description = ref<string | null>(null);
 
 /**
- * Cancels the editor and navigates back.
+ * Closes the editor.
  */
-function cancelEditor(target: string | void): void {
+function closeEditor(target: string | void): void {
+  // Reset editor lock
+  cmp.session.editorLock = false;
   if (typeof target === 'string') {
     // Route to specific target
     cmp.router.push({ path: target });
@@ -184,7 +186,7 @@ function submitForm(): void {
       // Run the submit handler function
       const target = await props.submit(mode, name.value, description.value);
       // Close the editor
-      cancelEditor(target);
+      closeEditor(target);
     });
   }
 }

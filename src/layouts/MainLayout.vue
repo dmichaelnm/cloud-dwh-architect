@@ -1,6 +1,12 @@
 <template>
   <!-- Layout -->
   <q-layout view="lHh Lpr lFf">
+    <!-- Message Dialog -->
+    <message-dialog
+      v-model="messageDialogOptions.visibility"
+      :options="messageDialogOptions"
+    />
+
     <!-- Header -->
     <q-header>
       <!-- Main Div -->
@@ -24,12 +30,13 @@
             <project-selection
               v-model="selectedProjectId"
               @update:model-value="switchProject"
+              @project:overview="routeTo('/project/overview')"
               @project:create="
                 openEditor(
                   EFSDocumentType.project,
                   cm.EEditorMode.create,
                   'new',
-                  (project) => selectedProjectId = project.id
+                  (project) => (selectedProjectId = project.id)
                 )
               "
             />
@@ -196,20 +203,26 @@
 import * as cm from 'src/scripts/utilities/common';
 import { onBeforeMount, ref } from 'vue';
 import { onAccountStateChange } from 'src/scripts/application/Account';
-import { versionInfo } from 'src/scripts/config/version';
 import { logout } from 'src/scripts/utilities/firebase';
-import { languageOptions } from 'src/scripts/options/language';
 import { loadProjects } from 'src/scripts/application/Project';
+import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
+import { versionInfo } from 'src/scripts/config/version';
+import { languageOptions } from 'src/scripts/options/language';
 import AppButton from 'components/common/AppButton.vue';
 import AppMenuItem from 'components/common/AppMenuItem.vue';
 import SocialMediaLinks from 'components/application/SocialMediaLinks.vue';
 import ProjectSelection from 'components/application/project/ProjectSelection.vue';
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
+import MessageDialog from 'components/application/MessageDialog.vue';
 
 // Get common composables
 const cmp = cm.useCommonComposables();
 // Get open editor composable
 const openEditor = cm.useOpenEditor();
+// Get route to composable
+const routeTo = cm.useRouteTo();
+// Get message dialog options
+const { messageDialogOptions } = useMessageDialog();
 
 // Selected project ID
 const selectedProjectId = ref<string | null>(null);

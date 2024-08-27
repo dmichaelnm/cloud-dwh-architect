@@ -54,6 +54,7 @@
             :label="$t(btn.label)"
             :color="btn.color"
             :icon="btn.icon"
+            style="margin-left: 8px"
             @click="closeDialog(btn.value)"
           />
         </div>
