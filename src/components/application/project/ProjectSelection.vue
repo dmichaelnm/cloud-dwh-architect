@@ -13,6 +13,7 @@
       <q-list dense padding>
         <!-- Project Overview -->
         <app-menu-item
+          v-if="cmp.session.projects.length > 0"
           class="project-action"
           clickable
           closeable

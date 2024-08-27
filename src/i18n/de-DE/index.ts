@@ -278,6 +278,14 @@ export default {
         members: 'Projektmitglieder',
       },
     },
+    // Project Overview Messages
+    overview: {
+      // Title
+      title: 'Projektübersicht',
+      // Message
+      message: 'Die folgende Übersicht zeigt eine Liste aller Projekte, die Sie selbst erstellt haben oder in denen ' +
+        'Sie als Projekt-Mitglied tätig sind.'
+    },
     // Project Member Table Messages
     member: {
       // Owner & Manager Message
