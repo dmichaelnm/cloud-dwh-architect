@@ -80,7 +80,7 @@
 
 // Dialog Message
 .dialog-row {
-  padding: 16px;
+  padding: 8px;
 }
 </style>
 
