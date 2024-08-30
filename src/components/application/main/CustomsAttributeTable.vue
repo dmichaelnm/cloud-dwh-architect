@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import * as fs from 'src/scripts/application/FSDocument';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { EInputType, toBoolean, toNumber } from 'src/scripts/utilities/common';
 import { attributeTypes } from 'src/scripts/options/attributeTypes';
 import AppEditableTable from 'components/common/AppEditableTable.vue';
@@ -56,8 +56,23 @@ import AppEditableTable from 'components/common/AppEditableTable.vue';
 // Table reference
 const table = ref<typeof AppEditableTable | null>(null);
 
-// Array of custom attributes
-const attributes = ref<fs.TCustomAttribute[]>([]);
+/** Defines the properties of this component */
+const props = defineProps<{
+  /** Model value */
+  modelValue: fs.TCustomAttribute[];
+}>();
+
+/** Defines the events that can be emitted by this component */
+const emit = defineEmits<{
+  /** Update model value event */
+  (event: 'update:modelValue', value: fs.TCustomAttribute[]): void;
+}>();
+
+/** Internal attributes */
+const attributes = computed({
+  get: () => props.modelValue,
+  set: (value: fs.TCustomAttribute[]) => emit('update:modelValue', value),
+});
 
 /**
  * Find the next free attribute name and add a new attribute to the existing attributes.
@@ -155,15 +170,4 @@ function validateAttribute(
   return newValue;
 }
 
-/**
- * Retrieves the array of the custom attributes.
- *
- * @return {TCustomAttribute[]} An array of custom attributes.
- */
-function getAttributes(): fs.TCustomAttribute[] {
-  return attributes.value;
-}
-
-/** Exposed methods */
-defineExpose({ getAttributes });
 </script>

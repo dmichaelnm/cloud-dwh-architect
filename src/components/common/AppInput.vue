@@ -13,6 +13,7 @@
         !mandatory || (value && value.length > 0) || $t('error.inputEmpty'),
     ]"
     :hide-bottom-space="hideBottomSpace"
+    :rows="rows ? rows : 2"
     lazy-rules="ondemand"
     dense
     outlined
@@ -44,6 +45,8 @@ const props = defineProps<{
   mandatory?: boolean;
   /** Flag for hiding the bottom space */
   hideBottomSpace?: boolean;
+  /** Row count (for textarea type) */
+  rows?: number;
 }>();
 
 /** Defines the events that can be emitted by this component */

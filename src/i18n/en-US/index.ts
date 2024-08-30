@@ -306,8 +306,8 @@ export default {
         // Delete Button
         delete: 'Delete Project',
         // View Button
-        view: 'View Project'
-      }
+        view: 'View Project',
+      },
     },
     // Project Member Table Messages
     member: {

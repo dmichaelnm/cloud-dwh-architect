@@ -26,7 +26,7 @@
         <!-- Message Row -->
         <div class="row">
           <!-- Message Column -->
-          <div class="col-9">
+          <div class="col-7">
             {{ $t(`${scope}.editor.${mode}.message`) }}
           </div>
         </div>
@@ -42,10 +42,17 @@
               auto-focus
             />
           </div>
+        </div>
+        <!-- Description Row -->
+        <div class="row">
           <!-- Description Column -->
-          <div class="col-9">
+          <div class="col-7">
             <!-- Name Input -->
-            <app-input v-model="description" :label="$t('label.description')" />
+            <app-input
+              v-model="description"
+              :label="$t('label.description')"
+              :type="'textarea'"
+            />
           </div>
         </div>
         <!-- Editor Content Row -->
@@ -117,7 +124,7 @@
 
 <script setup lang="ts">
 import * as cm from 'src/scripts/utilities/common';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRunTask } from 'src/scripts/utilities/runTask';
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 import AppButton from 'components/common/AppButton.vue';
@@ -130,6 +137,8 @@ const runTask = useRunTask();
 
 // Get the editor mode
 const mode = cmp.route.params.mode as cm.EEditorMode;
+// Get the ID of the item to edited
+const itemId = cmp.route.params.id as string;
 
 /** Defines the properties of this component */
 const props = defineProps<{
@@ -137,6 +146,8 @@ const props = defineProps<{
   scope: EFSDocumentType;
   /** Component keys */
   components: cm.TTabDefinition[];
+  /** Initialization handler function */
+  initialize?: (mode: cm.EEditorMode, id: string) => Promise<void>;
   /** Validate handler function */
   validate?: () => boolean;
   /** Submit handler function */
@@ -154,6 +165,17 @@ const tab = ref(props.components[0].key);
 const name = ref('');
 // Description
 const description = ref<string | null>(null);
+
+/** Lifecycle method that is called before this component is mounted */
+onMounted(async () => {
+  await runTask(async () => {
+    // Check if initialization handler is specified
+    if (props.initialize) {
+      // Call the handler
+      await props.initialize(mode, itemId);
+    }
+  });
+});
 
 /**
  * Closes the editor.
@@ -190,4 +212,21 @@ function submitForm(): void {
     });
   }
 }
+
+/**
+ * Sets the name and description properties.
+ *
+ * @param {string} aName - The name to set.
+ * @param {string|null} aDescription - The description to set. Can be a string or null.
+ */
+function setNameAndDescription(
+  aName: string,
+  aDescription: string | null
+): void {
+  name.value = aName;
+  description.value = aDescription;
+}
+
+/** Exposed methods */
+defineExpose({ setNameAndDescription });
 </script>

@@ -279,6 +279,15 @@ export default {
           'verschiedene Rollen zuweisen. Beachten Sie dabei jedoch, dass diese ein registriertes Konto für diese ' +
           'Anwendung besitzen müssen.',
       },
+      // Edit Messages
+      edit: {
+        // Edit Editor Title
+        title: 'Projekt bearbeiten',
+        // Edit Editor Message
+        message:
+          'Hier können Sie die Eigenschaften des Projekts anpassen sowie die Miglieder Ihres Projektteams ' +
+          'verwalten. Wenn Sie der Eigentümer des Projekts sind, können Sie auch einen anderen Projektleiter einsetzen.',
+      },
       // Tab Labels
       tab: {
         // Project Members
@@ -302,7 +311,7 @@ export default {
         // User Role
         userRole: 'Eigene Rolle',
         // Member Count
-        memberCount: 'Anzahl Mitglieder'
+        memberCount: 'Anzahl Mitglieder',
       },
       // Tooltip Messages
       tooltip: {
@@ -311,8 +320,8 @@ export default {
         // Delete Button
         delete: 'Projekt löschen',
         // View Button
-        view: 'Projekt betrachten'
-      }
+        view: 'Projekt betrachten',
+      },
     },
     // Project Member Table Messages
     member: {

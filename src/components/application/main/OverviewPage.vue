@@ -22,7 +22,7 @@
       <!-- Message Row -->
       <div class="row">
         <!-- Message Column -->
-        <div class="col-9">{{ $t(`${scope}.overview.message`) }}</div>
+        <div class="col-7">{{ $t(`${scope}.overview.message`) }}</div>
       </div>
       <!-- Table Row -->
       <div class="row">
@@ -45,6 +45,7 @@
                   icon="edit"
                   size="xs"
                   :tooltip="$t(`${scope}.overview.tooltip.edit`)"
+                  @click="openEditor(scope, EEditorMode.edit, props.row.id)"
                 />
                 <!-- Delete Button -->
                 <app-button
@@ -183,6 +184,8 @@ const cmp = cm.useCommonComposables();
 const routeTo = cm.useRouteTo();
 // Get format timestamp composable
 const formatTimestamp = cm.useFormatTimestamp();
+// Get open editor composable
+const openEditor = cm.useOpenEditor();
 
 /** Defines the properties of this component */
 const props = defineProps<{
@@ -213,6 +216,7 @@ const tableColumn = computed<cm.TTableColumn[]>(() => {
     label: cmp.i18n.t(`${props.scope}.overview.header.name`),
     align: 'left',
     sortable: true,
+    headerStyle: 'width: 600px',
     field: (row) => row.data.common.name,
   });
   // Add custom columns

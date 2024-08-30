@@ -5,12 +5,12 @@
     <!-- Message Row -->
     <div class="row" v-if="message">
       <!-- Message Column -->
-      <div class="col-9">{{ message }}</div>
+      <div class="col-7">{{ message }}</div>
     </div>
     <!-- Empty Table Message Row -->
     <div class="row" v-if="rows.length === 0 && messageEmpty">
       <!-- Empty Table Message Column -->
-      <div class="col-6 empty-message">{{ messageEmpty }}</div>
+      <div class="col-7 empty-message">{{ messageEmpty }}</div>
     </div>
     <!-- Table Row -->
     <div class="row" v-if="rows.length > 0">
@@ -169,7 +169,7 @@
         />
         <!-- Remove Row Button -->
         <app-button
-          v-if="deletable && rows.length > 0"
+          v-if="deletable && rows.length > 0 && rowIndex != -1"
           appearance="icon"
           icon="remove"
           size="sm"

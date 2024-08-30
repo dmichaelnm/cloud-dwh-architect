@@ -51,7 +51,7 @@ export class Account extends fs.FSDocument<IAccountData> {}
  * @param {string} id - The ID of the account to load.
  * @return {Promise<Account | undefined>} - A promise that resolves to an Account object if found, or undefined if not found.
  */
-export async function load(id: string): Promise<Account | undefined> {
+export async function loadAccount(id: string): Promise<Account | undefined> {
   return (await fs.load('account', id)) as Account;
 }
 
@@ -75,7 +75,7 @@ export function onAccountStateChange(
       handler(null);
     } else {
       // Load the account document from the Firestore database
-      const account = await load(user.uid);
+      const account = await loadAccount(user.uid);
       if (account) {
         // Account document was loaded
         if (account.data.state.locked) {
@@ -156,7 +156,7 @@ export async function login(email: string, password: string): Promise<Account> {
     password
   );
   // Load the account document
-  const account = await load(credential.user.uid);
+  const account = await loadAccount(credential.user.uid);
   if (account) {
     // Check the lock state
     if (account.data.state.locked) {

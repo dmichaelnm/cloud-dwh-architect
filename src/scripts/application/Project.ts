@@ -75,6 +75,17 @@ export class Project extends fs.FSDocument<IProjectData> {
   }
 
   /**
+   * Retrieves the project member who has the role of manager.
+   *
+   * @return {TProjectMember} The project member with the manager role.
+   */
+  getManager(): TProjectMember {
+    return this.data.members.find(
+      (member) => member.role === EProjectRole.manager
+    ) as TProjectMember;
+  }
+
+  /**
    * Retrieves the role of the current user in the project.
    *
    * @return {EProjectRole} The role of the current user in the project, represented as an EProjectRole enum value.
@@ -163,7 +174,7 @@ export async function loadProjects(): Promise<Project[]> {
 /*
 export async function loadProject(projectId: string): Promise<Project> {
   // Load the project document
-  const project = (await fs.load<IProjectData>(
+  const project = (await fs.loadAccount<IProjectData>(
     'project',
     projectId
   )) as Project;

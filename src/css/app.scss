@@ -202,8 +202,12 @@ div.q-menu.q-position-engine.scroll.q-popup-edit {
 // ============================================================================
 
 .footer {
-  background-color: transparent;
+  background-color: $light-background-body;
   padding: 4px;
+}
+
+.body--dark .footer {
+  background-color: $dark-background-body;
 }
 
 .footer-hint {

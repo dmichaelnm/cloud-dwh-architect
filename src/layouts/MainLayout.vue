@@ -124,7 +124,7 @@
       <!-- Footer Main DIV -->
       <div>
         <!-- Footer Row -->
-        <div class="row">
+        <div class="row items-center">
           <!-- Left Footer Column -->
           <div class="col text-left footer-hint">
             <!-- Copyright Notice -->
