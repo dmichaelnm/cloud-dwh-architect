@@ -47,7 +47,70 @@ export interface IProjectData extends fs.IFSDocumentData {
 /**
  * This class represents a Project document in the Firestore database.
  */
-export class Project extends fs.FSDocument<IProjectData> {}
+export class Project extends fs.FSDocument<IProjectData> {
+  /**
+   * Creates a new Project object using the provided document.
+   *
+   * @param {FSDocument<IProjectData>} document - The document to create the project from.
+   *
+   * @return {Project} The newly created Project object.
+   */
+  static create(document: fs.FSDocument<IProjectData>): Project {
+    return new Project({
+      path: document.path,
+      id: document.id,
+      data: document.data,
+    });
+  }
+
+  /**
+   * Retrieves the owner of the project.
+   *
+   * @return {TProjectMember} The project owner.
+   */
+  getOwner(): TProjectMember {
+    return this.data.members.find(
+      (member) => member.role === EProjectRole.owner
+    ) as TProjectMember;
+  }
+
+  /**
+   * Retrieves the role of the current user in the project.
+   *
+   * @return {EProjectRole} The role of the current user in the project, represented as an EProjectRole enum value.
+   */
+  getUserRole(): EProjectRole {
+    // Get ID of the current user
+    const uid = getCurrentAccountId();
+    // Find the member with the current user ID
+    return this.data.members.find((member) => member.id === uid)
+      ?.role as EProjectRole;
+  }
+
+  /**
+   * Checks if the current user has one of the specified roles for the project.
+   *
+   * @param {...EProjectRole[]} roles - The roles to check against.
+   * @return {boolean} - Returns true if the current user has one of the permitted roles, otherwise false.
+   */
+  hasRole(...roles: EProjectRole[]): boolean {
+    // Get ID of the current user
+    const uid = getCurrentAccountId();
+    // Iterate over all members of the project
+    for (const member of this.data.members) {
+      // Check, if the current user is the member
+      if (member.id === uid) {
+        // Check if the member has one of the permitted roles
+        if (roles.some((role) => member.role === role)) {
+          // Permission granted
+          return true;
+        }
+      }
+    }
+    // No permission granted
+    return false;
+  }
+}
 
 /**
  * Creates a new project with the given details and returns the created project.
@@ -91,11 +154,23 @@ export async function loadProjects(): Promise<Project[]> {
   // Get UID of the current user
   const uid = getCurrentAccountId();
   // Load all projects for the current user
-  return await fs.loadDocuments<IProjectData>(
+  return (await fs.loadDocuments<IProjectData>(
     'project',
     where('access', 'array-contains', uid)
-  );
+  )) as Project[];
 }
+
+/*
+export async function loadProject(projectId: string): Promise<Project> {
+  // Load the project document
+  const project = (await fs.load<IProjectData>(
+    'project',
+    projectId
+  )) as Project;
+  // Return the project
+  return project;
+}
+*/
 
 /**
  * Retrieves a list of access IDs from a given array of project members.

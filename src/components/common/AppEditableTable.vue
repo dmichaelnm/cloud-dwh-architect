@@ -23,7 +23,7 @@
           :rows-per-page-label="$t('label.rowsPerPage')"
           :pagination-label="(f, e, t) => f + ' - ' + e + ' / ' + t"
           :pagination="{
-            rowsPerPage: rowsPerPage ? rowsPerPage : 10,
+            rowsPerPage: rowsPerPage ? rowsPerPage : paginate ? 10 : 0,
             sortBy: sortBy,
             descending: sortDescending,
           }"
@@ -330,7 +330,7 @@ function getInputType(column: cm.TTableColumn, row: any): cm.EInputType {
  * @returns The slot name for the column, in the format "body-cell-{name}".
  */
 function getSlotName(column: cm.TTableColumn): `body-cell-${string}` {
-  return `body-cell-${column.name}` as unknown as `body-cell-${string}`;
+  return `body-cell-${column.name}` as const;
 }
 
 /**

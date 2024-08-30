@@ -4,6 +4,7 @@ import { QTableColumn, useQuasar } from 'quasar';
 import { useSessionStore } from 'stores/session-store';
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
+import { Timestamp } from 'firebase/firestore';
 
 /**
  * Represents the available modes for an editor.
@@ -15,6 +16,8 @@ export enum EEditorMode {
   edit = 'edit',
   /** View Mode */
   view = 'view',
+  /** Delete Mode */
+  delete = 'delete',
 }
 
 /**
@@ -155,6 +158,27 @@ export function useRouteTo() {
       // Route to target path
       await cmp.router.push({ path: path });
     }
+  };
+}
+
+/**
+ * Returns a function that formats a given timestamp into a string based on the language preference of the current account.
+ *
+ * @return {function} A function that accepts a timestamp value and returns a formatted string representation of the timestamp.
+ */
+export function useFormatTimestamp() {
+  // Get common composable
+  const cmp = useCommonComposables();
+  // Return format timestamp function
+  return (value: Timestamp | null) => {
+    // If null, return an empty string
+    if (value === null) {
+      return '';
+    }
+    // Return the formatted string of the timestamp considering the language preference
+    return value
+      .toDate()
+      .toLocaleString(cmp.session.currentAccount.data.preferences.language);
   };
 }
 

@@ -33,8 +33,12 @@ export default {
 
   // Common Labels
   label: {
+    // Altered By At
+    alteredByAt: 'Altered By / At',
     // Custom Attributes
     attributes: 'Custom Attributes',
+    // Created By At
+    createdByAt: 'Created By / At',
     // Name
     name: 'Name',
     // Description
@@ -83,8 +87,8 @@ export default {
       // Number
       number: 'Number',
       // Boolean
-      boolean: 'Boolean'
-    }
+      boolean: 'Boolean',
+    },
   },
 
   // Language Labels
@@ -121,8 +125,9 @@ export default {
       // Title
       title: 'Discard Changes?',
       // Message
-      message: 'Are you sure you want to discard the changes you have made so far in this editor?'
-    }
+      message:
+        'Are you sure you want to discard the changes you have made so far in this editor?',
+    },
   },
 
   // Common Error Messages
@@ -130,13 +135,14 @@ export default {
     // Input field must not be empty
     inputEmpty: 'The input field must not be empty.',
     // No account selected
-    accountNotSelected: 'An account must be selected.'
+    accountNotSelected: 'An account must be selected.',
   },
 
   // Custom Attribute Messages
   customAttribute: {
     // Table Message
-    tableMessage: 'Here you can define your own attributes that can later be used in templates for script generation.',
+    tableMessage:
+      'Here you can define your own attributes that can later be used in templates for script generation.',
     // Empty Message
     emptyMessage: 'No custom attributes have been created yet.',
     // Header Labels
@@ -146,7 +152,7 @@ export default {
       // Type
       type: 'Datatype',
       // Value
-      value: 'Value'
+      value: 'Value',
     },
     // Tooltip Messages
     tooltip: {
@@ -154,7 +160,7 @@ export default {
       add: 'Add Attribute',
       // Remove Button
       remove: 'Remove Attribute',
-    }
+    },
   },
 
   // Authentication Messages
@@ -246,14 +252,15 @@ export default {
       // Create New Project
       create: 'New Project',
       // Overview
-      overview: 'Project Overview'
+      overview: 'Project Overview',
     },
     // General Project Messages
     message: {
       // First Project Message
-      firstProject: 'It appears that you have not yet created a project and are not assigned as a team member to ' +
+      firstProject:
+        'It appears that you have not yet created a project and are not assigned as a team member to ' +
         'any project. However, to work with the application you need at least one project. Start now by creating a ' +
-        'new project.'
+        'new project.',
     },
     // Project Editor Messages
     editor: {
@@ -278,8 +285,29 @@ export default {
       // Title
       title: 'Project Overview',
       // Message
-      message: 'The following overview shows a list of all projects that you have created yourself or in which ' +
-        'you are involved as a project member.'
+      message:
+        'The following overview shows a list of all projects that you have created yourself or in which ' +
+        'you are involved as a project member.',
+      // Overview Header Messages
+      header: {
+        // Name
+        name: 'Project Name',
+        // Owner
+        owner: 'Owner',
+        // User Role
+        userRole: 'Own Role',
+        // Member Count
+        memberCount: 'Member Count',
+      },
+      // Tooltip Messages
+      tooltip: {
+        // Edit Button
+        edit: 'Edit Project',
+        // Delete Button
+        delete: 'Delete Project',
+        // View Button
+        view: 'View Project'
+      }
     },
     // Project Member Table Messages
     member: {

@@ -33,8 +33,12 @@ export default {
 
   // Common Labels
   label: {
+    // Altered By At
+    alteredByAt: 'Geändert von / am',
     // Custom Attributes
     attributes: 'Benutzerdefinierte Attribute',
+    // Created By At
+    createdByAt: 'Erstellt von / am',
     // Name
     name: 'Name',
     // Description
@@ -67,8 +71,8 @@ export default {
       // Number
       number: 'Zahl',
       // Boolean
-      boolean: 'Wahrheitswert'
-    }
+      boolean: 'Wahrheitswert',
+    },
   },
 
   // Language Labels
@@ -121,8 +125,9 @@ export default {
       // Title
       title: 'Änderungen verwerfen?',
       // Message
-      message: 'Wollen Sie die bisher in diesem Editor vorgenommenen Änderungen wirklich verwerfen?'
-    }
+      message:
+        'Wollen Sie die bisher in diesem Editor vorgenommenen Änderungen wirklich verwerfen?',
+    },
   },
 
   // Common Error Messages
@@ -130,13 +135,14 @@ export default {
     // Input field must not be empty
     inputEmpty: 'Das Eingabefeld darf nicht leer sein.',
     // No account selected
-    accountNotSelected: 'Es muss ein Konto ausgewählt sein.'
+    accountNotSelected: 'Es muss ein Konto ausgewählt sein.',
   },
 
   // Custom Attribute Messages
   customAttribute: {
     // Table Message
-    tableMessage: 'Hier können Sie eigene Attribute festlegen, die später in Vorlagen für die Skriptgenerierung ' +
+    tableMessage:
+      'Hier können Sie eigene Attribute festlegen, die später in Vorlagen für die Skriptgenerierung ' +
       'verwendet werden können.',
     // Empty Message
     emptyMessage: 'Bisher wurden noch keine eigenen Attribute erstellt.',
@@ -147,15 +153,15 @@ export default {
       // Type
       type: 'Datentyp',
       // Value
-      value: 'Wert'
+      value: 'Wert',
     },
     // Tooltip Messages
     tooltip: {
       // Add Button
       add: 'Neues Attribut hinzufügen',
       // Remove Button
-      remove: 'Attribut entfernen'
-    }
+      remove: 'Attribut entfernen',
+    },
   },
 
   // Authentication Messages
@@ -250,14 +256,15 @@ export default {
       // Create New Project
       create: 'Neues Projekt',
       // Overview
-      overview: 'Projektübersicht'
+      overview: 'Projektübersicht',
     },
     // General Project Messages
     message: {
       // First Project Message
-      firstProject: 'Wie es scheint, haben Sie aktuell noch kein Projekt erstellt und wurden keinem Projekt als ' +
+      firstProject:
+        'Wie es scheint, haben Sie aktuell noch kein Projekt erstellt und wurden keinem Projekt als ' +
         'Team-Mitglied zugeordnet. Um mit der Applikation arbeiten zu können benötigen Sie jedoch mindestens ein ' +
-        'Projekt. Beginnen Sie jetzt, indem Sie ein neues Projekt erstellen.'
+        'Projekt. Beginnen Sie jetzt, indem Sie ein neues Projekt erstellen.',
     },
     // Project Editor Messages
     editor: {
@@ -283,8 +290,29 @@ export default {
       // Title
       title: 'Projektübersicht',
       // Message
-      message: 'Die folgende Übersicht zeigt eine Liste aller Projekte, die Sie selbst erstellt haben oder in denen ' +
-        'Sie als Projekt-Mitglied tätig sind.'
+      message:
+        'Die folgende Übersicht zeigt eine Liste aller Projekte, die Sie selbst erstellt haben oder in denen ' +
+        'Sie als Projekt-Mitglied tätig sind.',
+      // Overview Header Messages
+      header: {
+        // Name
+        name: 'Name des Projekts',
+        // Owner
+        owner: 'Eigentümer',
+        // User Role
+        userRole: 'Eigene Rolle',
+        // Member Count
+        memberCount: 'Anzahl Mitglieder'
+      },
+      // Tooltip Messages
+      tooltip: {
+        // Edit Button
+        edit: 'Projekt bearbeiten',
+        // Delete Button
+        delete: 'Projekt löschen',
+        // View Button
+        view: 'Projekt betrachten'
+      }
     },
     // Project Member Table Messages
     member: {
@@ -312,7 +340,7 @@ export default {
         // Add Button
         add: 'Neues Mitglied hinzufügen',
         // Delete Button
-        remove: 'Mitglied entfernen'
+        remove: 'Mitglied entfernen',
       },
       // Error Messages
       error: {
@@ -321,7 +349,8 @@ export default {
         // Team member cannot be the owner
         notOwner: 'Der Eigentümer kann nicht gleichzeitig Team-Mitglied sein.',
         // Team member cannot be the manager
-        notManager: 'Der Projektleiter kann nicht gleichzeitig Team-Mitglied sein.',
+        notManager:
+          'Der Projektleiter kann nicht gleichzeitig Team-Mitglied sein.',
       },
     },
   },
