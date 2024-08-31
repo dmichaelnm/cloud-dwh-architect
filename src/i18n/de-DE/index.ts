@@ -288,6 +288,14 @@ export default {
           'Hier können Sie die Eigenschaften des Projekts anpassen sowie die Miglieder Ihres Projektteams ' +
           'verwalten. Wenn Sie der Eigentümer des Projekts sind, können Sie auch einen anderen Projektleiter einsetzen.',
       },
+      // View Messages
+      view: {
+        // View Editor Title
+        title: 'Projekt betrachten',
+        // View Editor Message
+        message: 'Hier können Sie die Eigenschaften des Projekt sowie die Mitglieder des Projekteams einsehen. ' +
+          'Aufgrund Ihrer Rolle können Sie jedoch keine Änderungen am Projekt vornehmen.'
+      },
       // Tab Labels
       tab: {
         // Project Members

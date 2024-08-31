@@ -33,7 +33,7 @@
           :label="$t('enum.memberRole.manager')"
           :error="managerError"
           :validator="validateManager"
-          :read-only="isManagerReadOnly"
+          :read-only="isManagerReadOnly || readOnly"
         />
       </div>
     </div>
@@ -72,6 +72,7 @@
           :handler-add="() => (visibility = true)"
           :tooltip-add="$t('project.member.tooltip.add')"
           :tooltip-remove="$t('project.member.tooltip.remove')"
+          :read-only="readOnly"
           deletable
         />
       </div>
@@ -114,6 +115,8 @@ type TModelValue = {
 const props = defineProps<{
   /** Model value */
   modelValue: TModelValue;
+  /** Read only flag */
+  readOnly: boolean;
 }>();
 
 /** Defines the events that can be emitted by this component */

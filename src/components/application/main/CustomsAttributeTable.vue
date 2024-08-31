@@ -42,6 +42,7 @@
     :tooltip-add="$t('customAttribute.tooltip.add')"
     :tooltip-remove="$t('customAttribute.tooltip.remove')"
     :validator="validateAttribute"
+    :read-only="readOnly"
     deletable
   />
 </template>
@@ -60,6 +61,8 @@ const table = ref<typeof AppEditableTable | null>(null);
 const props = defineProps<{
   /** Model value */
   modelValue: fs.TCustomAttribute[];
+  /** Read only flag */
+  readOnly?: boolean;
 }>();
 
 /** Defines the events that can be emitted by this component */

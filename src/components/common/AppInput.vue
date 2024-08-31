@@ -12,11 +12,13 @@
       (value) =>
         !mandatory || (value && value.length > 0) || $t('error.inputEmpty'),
     ]"
-    :hide-bottom-space="hideBottomSpace"
+    :hide-bottom-space="hideBottomSpace || readOnly"
     :rows="rows ? rows : 2"
     lazy-rules="ondemand"
     dense
-    outlined
+    :outlined="!readOnly"
+    :borderless="readOnly"
+    :readonly="readOnly"
     stack-label
     @update:modelValue="(value) => (internalValue = value)"
   />
@@ -47,6 +49,8 @@ const props = defineProps<{
   hideBottomSpace?: boolean;
   /** Row count (for textarea type) */
   rows?: number;
+  /** Read only flag */
+  readOnly?: boolean;
 }>();
 
 /** Defines the events that can be emitted by this component */

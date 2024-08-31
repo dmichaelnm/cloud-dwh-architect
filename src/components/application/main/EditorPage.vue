@@ -14,10 +14,14 @@
           <!-- Button Column -->
           <div class="col text-right q-gutter-x-md">
             <!-- Save Button -->
-            <app-button :label="$t('button.save')" type="submit" />
+            <app-button
+              :label="$t('button.save')"
+              type="submit"
+              v-if="!readOnly"
+            />
             <!-- Cancel Button -->
             <app-button
-              :label="$t('button.cancel')"
+              :label="readOnly ? $t('button.close') : $t('button.cancel')"
               color="sbutton"
               @click="closeEditor"
             />
@@ -38,6 +42,7 @@
             <app-input
               v-model="name"
               :label="$t('label.name')"
+              :read-only="readOnly"
               mandatory
               auto-focus
             />
@@ -52,6 +57,7 @@
               v-model="description"
               :label="$t('label.description')"
               :type="'textarea'"
+              :read-only="readOnly"
             />
           </div>
         </div>
@@ -156,6 +162,8 @@ const props = defineProps<{
     name: string,
     description: string | null
   ) => Promise<void | string>;
+  /** Read only flag */
+  readOnly: boolean;
 }>();
 
 // Current tab name

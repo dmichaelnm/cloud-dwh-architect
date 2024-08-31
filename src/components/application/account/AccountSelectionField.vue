@@ -14,6 +14,7 @@
     :borderless="readOnly"
     :error="error !== undefined && error !== null && error.length > 0"
     :error-message="error !== null ? error : undefined"
+    :hide-bottom-space="readOnly"
     dense
     readonly
     stack-label

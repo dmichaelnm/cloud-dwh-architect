@@ -274,6 +274,23 @@ export default {
           'also add more members to your project and assign them different roles. However, please note that they ' +
           'must have a registered account for this application.',
       },
+      // Edit Messages
+      edit: {
+        // Edit Editor Title
+        title: 'Edit Project',
+        // Edit Editor Message
+        message:
+          'Here you can customize the properties of the project and manage the members of your project team. ' +
+          'If you are the owner of the project, you can also assign another project manager.',
+      },
+      // View Messages
+      view: {
+        // View Editor Title
+        title: 'View Project',
+        // View Editor Message
+        message: 'Here you can view the properties of the project and the members of the project team. However, due ' +
+          'to your role, you cannot make any changes to the project.'
+      },
       // Tab Labels
       tab: {
         // Project Members

@@ -10,15 +10,24 @@
     :initialize="initialize"
     :validate="validate"
     :submit="submit"
+    :read-only="readOnly"
   >
     <!-- Template: Project Members -->
     <template #tab-members>
-      <project-member ref="memberComponent" v-model="member" />
+      <project-member
+        ref="memberComponent"
+        v-model="member"
+        :read-only="readOnly"
+      />
     </template>
 
     <!-- Template: Customs Attribute -->
     <template #tab-attributes>
-      <customs-attribute-table ref="attributesTable" v-model="attributes" />
+      <customs-attribute-table
+        ref="attributesTable"
+        v-model="attributes"
+        :read-only="readOnly"
+      />
     </template>
   </editor-page>
 </template>
@@ -54,6 +63,8 @@ const member = ref<{
 
 // Custom attributes
 const attributes = ref<fs.TCustomAttribute[]>([]);
+// Read only flag
+const readOnly = ref(false);
 
 // Project ID
 let project: pj.Project | null = null;
@@ -65,7 +76,9 @@ async function initialize(mode: cm.EEditorMode, id: string): Promise<void> {
     member.value.manager = cmp.session.account;
   }
   // Process edit mode
-  if (mode === cm.EEditorMode.edit) {
+  if (mode !== cm.EEditorMode.create) {
+    // Set read only flag if view mode
+    readOnly.value = mode === cm.EEditorMode.view;
     // Get project
     project = cmp.session.getProject(id) as pj.Project;
     // Apply common values to the form fields

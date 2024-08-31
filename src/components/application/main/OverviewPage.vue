@@ -62,6 +62,7 @@
                   icon="visibility"
                   size="xs"
                   :tooltip="$t(`${scope}.overview.tooltip.view`)"
+                  @click="openEditor(scope, EEditorMode.view, props.row.id)"
                 />
               </q-td>
             </template>
