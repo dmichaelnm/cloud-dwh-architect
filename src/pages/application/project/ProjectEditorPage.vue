@@ -55,6 +55,9 @@ const member = ref<{
 // Custom attributes
 const attributes = ref<fs.TCustomAttribute[]>([]);
 
+// Project ID
+let project: pj.Project | null = null;
+
 async function initialize(mode: cm.EEditorMode, id: string): Promise<void> {
   // Process create mode
   if (mode === cm.EEditorMode.create) {
@@ -64,10 +67,7 @@ async function initialize(mode: cm.EEditorMode, id: string): Promise<void> {
   // Process edit mode
   if (mode === cm.EEditorMode.edit) {
     // Get project
-    const document = cmp.session.getProject(
-      id
-    ) as fs.FSDocument<pj.IProjectData>;
-    const project = pj.Project.create(document);
+    project = cmp.session.getProject(id) as pj.Project;
     // Apply common values to the form fields
     editorPage.value?.setNameAndDescription(
       project.data.common.name,
@@ -100,7 +100,40 @@ function validate(): boolean {
   return memberComponent.value?.validate();
 }
 
-// TODO add documentation
+/**
+ * Retrieves the owner of the project.
+ *
+ * @return {TProjectMember} The project owner, including their ID, name, and role.
+ */
+function getProjectOwner(): pj.TProjectMember {
+  return {
+    id: member.value.owner?.id,
+    name: member.value.owner?.data.common.name,
+    role: pj.EProjectRole.owner,
+  } as pj.TProjectMember;
+}
+
+/**
+ * Retrieves the project manager.
+ *
+ * @return {TProjectMember} An object representing the project manager, containing their id, name, and role.
+ */
+function getProjectManager(): pj.TProjectMember {
+  return {
+    id: member.value.manager?.id,
+    name: member.value.manager?.data.common.name,
+    role: pj.EProjectRole.manager,
+  } as pj.TProjectMember;
+}
+
+/**
+ * Submits a project for creation or update based on the provided editor mode.
+ *
+ * @param {cm.EEditorMode} mode - The editor mode which dictates whether to create or update a project.
+ * @param {string} name - The name of the project.
+ * @param {string | null} description - The description of the project, can be null.
+ * @return {Promise<void | string>} A promise that resolves to void or a string.
+ */
 async function submit(
   mode: cm.EEditorMode,
   name: string,
@@ -112,16 +145,8 @@ async function submit(
     const project = await pj.createProject(
       name,
       description,
-      {
-        id: member.value.owner?.id,
-        name: member.value.owner?.data.common.name,
-        role: pj.EProjectRole.owner,
-      } as pj.TProjectMember,
-      {
-        id: member.value.manager?.id,
-        name: member.value.manager?.data.common.name,
-        role: pj.EProjectRole.manager,
-      } as pj.TProjectMember,
+      getProjectOwner(),
+      getProjectManager(),
       member.value.members,
       attributes.value
     );
@@ -132,8 +157,17 @@ async function submit(
     await cmp.session.currentAccount.update();
     // Call result handler
     cmp.session.invokeResultHandler(project);
-    // Return router target
-    return '/';
+  } else if (mode === cm.EEditorMode.edit && project) {
+    // Update the project document
+    await pj.updateProject(
+      project,
+      name,
+      description,
+      getProjectOwner(),
+      getProjectManager(),
+      member.value.members,
+      attributes.value
+    );
   }
 }
 </script>

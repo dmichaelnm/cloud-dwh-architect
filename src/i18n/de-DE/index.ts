@@ -308,6 +308,8 @@ export default {
         name: 'Name des Projekts',
         // Owner
         owner: 'Eigentümer',
+        // Manager
+        manager: 'Projektleiter',
         // User Role
         userRole: 'Eigene Rolle',
         // Member Count

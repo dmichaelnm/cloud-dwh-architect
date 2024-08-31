@@ -294,6 +294,8 @@ export default {
         name: 'Project Name',
         // Owner
         owner: 'Owner',
+        // Manager
+        manager: 'Project Manager',
         // User Role
         userRole: 'Own Role',
         // Member Count

@@ -157,6 +157,40 @@ export async function createProject(
 }
 
 /**
+ * Updates the given project with the provided details.
+ *
+ * @param {Project} project - The project to be updated.
+ * @param {string} name - The new name of the project.
+ * @param {string | null} description - The new description of the project. Can be null.
+ * @param {TProjectMember} owner - The owner of the project.
+ * @param {TProjectMember} manager - The manager of the project.
+ * @param {TProjectMember[]} members - A list of project members.
+ * @param {fs.TCustomAttribute[]} attributes - A list of custom attributes to be added to the project.
+ *
+ * @return {Promise<void>} A promise that resolves when the project has been successfully updated.
+ */
+export async function updateProject(
+  project: Project,
+  name: string,
+  description: string | null,
+  owner: TProjectMember,
+  manager: TProjectMember,
+  members: TProjectMember[],
+  attributes: fs.TCustomAttribute[]
+): Promise<void> {
+  // Create members array
+  const projectMembers = [owner, manager, ...members];
+  // Apply to project
+  project.data.common.name = name;
+  project.data.common.description = description;
+  project.data.members = projectMembers;
+  project.data.attributes = attributes;
+  project.data.access = getAccessList(projectMembers);
+  // Update the Firestore document
+  await fs.updateDocument<IProjectData, Project>(project);
+}
+
+/**
  * Loads all projects for the current user.
  *
  * @returns {Promise<Project[]>} - A Promise that resolves to an array of Project objects representing the loaded projects.
@@ -165,10 +199,12 @@ export async function loadProjects(): Promise<Project[]> {
   // Get UID of the current user
   const uid = getCurrentAccountId();
   // Load all projects for the current user
-  return (await fs.loadDocuments<IProjectData>(
+  const documents = await fs.loadDocuments<IProjectData>(
     'project',
     where('access', 'array-contains', uid)
-  )) as Project[];
+  );
+  // Return project array
+  return documents.map((doc) => Project.create(doc));
 }
 
 /*

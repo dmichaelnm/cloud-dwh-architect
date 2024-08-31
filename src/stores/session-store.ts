@@ -11,7 +11,7 @@ export const useSessionStore = defineStore('session', {
     /** Result handler function for routing results */
     resultHandler: null as ((result: any) => void) | null,
     /** Flag for the editor lock */
-    editorLock: false as boolean
+    editorLock: false as boolean,
   }),
   getters: {
     /**
@@ -94,6 +94,6 @@ export const useSessionStore = defineStore('session', {
         // Reset result handler
         this.resultHandler = null;
       }
-    }
+    },
   },
 });

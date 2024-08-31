@@ -53,7 +53,7 @@
               headerStyle: 'width: 300px',
               input: cm.EInputType.none,
               sortable: true,
-              field: (row) => row.name,
+              field: (row) => row.name
             },
             // Role
             {
@@ -64,7 +64,7 @@
               input: cm.EInputType.select,
               options: memberRoles,
               translate: true,
-              field: (row) => $t(`enum.memberRole.${row.role}`),
+              field: (row) => $t(`enum.memberRole.${row.role}`)
             },
           ]"
           :rows="internal.members"

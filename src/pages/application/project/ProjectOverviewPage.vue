@@ -11,6 +11,13 @@
         field: (row) => getOwnerName(row),
       },
       {
+        name: 'manager',
+        label: cmp.i18n.t('project.overview.header.manager'),
+        align: 'left',
+        headerStyle: 'width: 150px',
+        field: (row) => getManagerName(row),
+      },
+      {
         name: 'userRole',
         label: cmp.i18n.t('project.overview.header.userRole'),
         align: 'left',
@@ -50,6 +57,19 @@ function getOwnerName(row: any): string {
   const project = pj.Project.create(row as fs.FSDocument<pj.IProjectData>);
   // Return the name of the owner
   return project.getOwner().name;
+}
+
+/**
+ * Retrieves the name of the manager for a given row.
+ *
+ * @param {any} row - The input data representing a document.
+ * @return {string} The name of the manager.
+ */
+function getManagerName(row: any): string {
+  // Get project
+  const project = pj.Project.create(row as fs.FSDocument<pj.IProjectData>);
+  // Return the name of the owner
+  return project.getManager().name;
 }
 
 /**
