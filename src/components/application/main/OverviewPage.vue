@@ -40,29 +40,30 @@
               <q-td :props="props">
                 <!-- Edit Button -->
                 <app-button
-                  v-if="permission(EEditorMode.edit, props.row)"
+                  v-if="permission(cm.EEditorMode.edit, props.row)"
                   appearance="icon"
                   icon="edit"
                   size="xs"
                   :tooltip="$t(`${scope}.overview.tooltip.edit`)"
-                  @click="openEditor(scope, EEditorMode.edit, props.row.id)"
+                  @click="openEditor(scope, cm.EEditorMode.edit, props.row.id)"
                 />
                 <!-- Delete Button -->
                 <app-button
-                  v-if="permission(EEditorMode.delete, props.row)"
+                  v-if="permission(cm.EEditorMode.delete, props.row)"
                   appearance="icon"
                   icon="delete"
                   size="xs"
                   :tooltip="$t(`${scope}.overview.tooltip.delete`)"
+                  @click="confirmDelete(props.row.id)"
                 />
                 <!-- View Button -->
                 <app-button
-                  v-if="permission(EEditorMode.view, props.row)"
+                  v-if="permission(cm.EEditorMode.view, props.row)"
                   appearance="icon"
                   icon="visibility"
                   size="xs"
                   :tooltip="$t(`${scope}.overview.tooltip.view`)"
-                  @click="openEditor(scope, EEditorMode.view, props.row.id)"
+                  @click="openEditor(scope, cm.EEditorMode.view, props.row.id)"
                 />
               </q-td>
             </template>
@@ -172,12 +173,13 @@
 </style>
 
 <script setup lang="ts">
-import { EFSDocumentType } from 'src/scripts/application/FSDocument';
-import AppButton from 'components/common/AppButton.vue';
+import * as fs from 'src/scripts/application/FSDocument';
 import * as cm from 'src/scripts/utilities/common';
-import { EEditorMode, TTableColumn } from 'src/scripts/utilities/common';
-import AppEditableTable from 'components/common/AppEditableTable.vue';
 import { computed } from 'vue';
+import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
+import { useRunTask } from 'src/scripts/utilities/runTask';
+import AppButton from 'components/common/AppButton.vue';
+import AppEditableTable from 'components/common/AppEditableTable.vue';
 
 // Get common composables
 const cmp = cm.useCommonComposables();
@@ -187,15 +189,21 @@ const routeTo = cm.useRouteTo();
 const formatTimestamp = cm.useFormatTimestamp();
 // Get open editor composable
 const openEditor = cm.useOpenEditor();
+// Get message dialog composable
+const { showConfirmationDialog } = useMessageDialog();
+// Get run task composable
+const runTask = useRunTask();
 
 /** Defines the properties of this component */
 const props = defineProps<{
   /** Scope of the overview */
-  scope: EFSDocumentType;
+  scope: fs.EFSDocumentType;
   /** Custom columns */
   columns: cm.TTableColumn[];
   /** Permissions handler function */
-  permission: (mode: EEditorMode, row: any) => boolean;
+  permission: (mode: cm.EEditorMode, row: any) => boolean;
+  /** Delete handler function */
+  delete: (document: fs.FSDocument<any>) => Promise<void>;
 }>();
 
 /** Table column definitions of the overview table */
@@ -245,12 +253,45 @@ const tableColumn = computed<cm.TTableColumn[]>(() => {
 });
 
 /**
+ * Triggers a confirmation dialog for deleting an item and proceeds with deletion if confirmed.
+ *
+ * @param {string} id - The identifier of the item to be deleted.
+ */
+function confirmDelete(id: string): void {
+  // Get project
+  const project = cmp.session.getProject(id);
+  if (project) {
+    // Show confirmation dialog
+    showConfirmationDialog(
+      cmp.i18n.t('dialog.confirmDelete.title', {
+        scope: cmp.i18n.t(`${props.scope}.scope.name`),
+      }),
+      cmp.i18n.t('dialog.confirmDelete.message', {
+        article: cmp.i18n.t(`${props.scope}.scope.article`),
+        scope: cmp.i18n.t(`${props.scope}.scope.name`),
+        name: project.data.common.name,
+      }),
+      null,
+      (confirmed) => {
+        if (confirmed) {
+          // Run task for deletion
+          runTask(async () => {
+            // Call the deletion handler
+            await props.delete(project);
+          });
+        }
+      }
+    );
+  }
+}
+
+/**
  * Returns the name of the slot for a given table column.
  *
  * @param column - The table column for which to get the slot name.
  * @returns The slot name for the column, in the format "body-cell-{name}".
  */
-function getSlotName(column: TTableColumn): `body-cell-${string}` {
+function getSlotName(column: cm.TTableColumn): `body-cell-${string}` {
   return `body-cell-${column.name}` as const;
 }
 </script>

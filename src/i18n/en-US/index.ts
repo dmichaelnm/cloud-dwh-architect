@@ -128,6 +128,13 @@ export default {
       message:
         'Are you sure you want to discard the changes you have made so far in this editor?',
     },
+    // Confirm deletion dialog
+    confirmDelete: {
+      // Title
+      title: 'Delete {scope}?',
+      // Message
+      message: 'Are you sure that you want to delete {article} {scope} "{name}"? This action cannot be undone.'
+    }
   },
 
   // Common Error Messages
@@ -247,6 +254,13 @@ export default {
 
   // Project Messages
   project: {
+    // Scope Labels
+    scope: {
+      // Article
+      article: 'the',
+      // Name
+      name: 'project'
+    },
     // Button Labels
     button: {
       // Create New Project

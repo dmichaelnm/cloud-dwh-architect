@@ -128,6 +128,14 @@ export default {
       message:
         'Wollen Sie die bisher in diesem Editor vorgenommenen Änderungen wirklich verwerfen?',
     },
+    // Confirm deletion dialog
+    confirmDelete: {
+      // Title
+      title: '{scope} löschen?',
+      // Message
+      message: 'Sind Sie sicher, dass Sie {article} {scope} "{name}" löschen wollen? Dieser Vorgang kann nicht ' +
+        'rückgängig gemacht werden.'
+    }
   },
 
   // Common Error Messages
@@ -251,6 +259,13 @@ export default {
 
   // Project Messages
   project: {
+    // Scope Labels
+    scope: {
+      // Article
+      article: 'das',
+      // Name
+      name: 'Projekt'
+    },
     // Button Labels
     button: {
       // Create New Project

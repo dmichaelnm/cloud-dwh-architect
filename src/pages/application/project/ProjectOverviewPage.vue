@@ -33,6 +33,7 @@
       },
     ]"
     :permission="getPermission"
+    :delete="deleteProject"
   >
   </overview-page>
 </template>
@@ -45,6 +46,8 @@ import * as pj from 'src/scripts/application/Project';
 
 // Get common composables
 const cmp = cm.useCommonComposables();
+// Get route to composable
+const routeTo = cm.useRouteTo();
 
 /**
  * Retrieves the name of the owner of the given project row.
@@ -126,5 +129,25 @@ function getPermission(mode: cm.EEditorMode, row: any): boolean {
   }
   // No permission
   return false;
+}
+
+/**
+ * Deletes the specified project and all its dependent documents
+ * from Firestore, and removes the project from the current session's project list.
+ *
+ * @param {fs.FSDocument<pj.IProjectData>} project - The project document to be deleted.
+ * @return {Promise<void>} A promise that resolves when the project has been deleted.
+ */
+async function deleteProject(
+  project: fs.FSDocument<pj.IProjectData>
+): Promise<void> {
+  // Delete project and all dependent documents from Firestore
+  await pj.deleteProject(project);
+  // Remove project from project list in session
+  cmp.session.removeProject(project.id);
+  // If no projects left, route to first project page
+  if (cmp.session.projects.length === 0) {
+    await routeTo('/project/first');
+  }
 }
 </script>

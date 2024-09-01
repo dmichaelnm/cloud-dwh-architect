@@ -170,6 +170,10 @@ async function submit(
     await cmp.session.currentAccount.update();
     // Call result handler
     cmp.session.invokeResultHandler(project);
+    // If this is the first project, redirect to main page
+    if (cmp.session.projects.length === 1) {
+      return '/';
+    }
   } else if (mode === cm.EEditorMode.edit && project) {
     // Update the project document
     await pj.updateProject(

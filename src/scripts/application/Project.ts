@@ -191,6 +191,19 @@ export async function updateProject(
 }
 
 /**
+ * Deletes a project document from the Firestore.
+ *
+ * @param {FSDocument<IProjectData>} project - The project document to be deleted.
+ * @return {Promise<void>} - A promise that resolves when the project has been deleted.
+ */
+export async function deleteProject(
+  project: fs.FSDocument<IProjectData>
+): Promise<void> {
+  // Delete the project document
+  await fs.deleteDocument<IProjectData>(project);
+}
+
+/**
  * Loads all projects for the current user.
  *
  * @returns {Promise<Project[]>} - A Promise that resolves to an array of Project objects representing the loaded projects.

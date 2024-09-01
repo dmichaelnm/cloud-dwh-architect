@@ -82,6 +82,21 @@ export const useSessionStore = defineStore('session', {
       return this.projects.find((project) => project.id === projectId) || null;
     },
     /**
+     * Removes a project from the list based on the provided project ID.
+     *
+     * @param {string} projectId - The ID of the project to be removed.
+     */
+    removeProject(projectId: string): void {
+      // Get index of the project in list
+      const index = this.projects.findIndex(
+        (project) => project.id === projectId
+      );
+      // If found, remove it from list
+      if (index > -1) {
+        this.projects.splice(index, 1);
+      }
+    },
+    /**
      * Invokes the result handler function with the given result.
      *
      * @param result - The result to be passed to the result handler.

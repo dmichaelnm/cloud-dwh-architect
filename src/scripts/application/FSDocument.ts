@@ -234,6 +234,21 @@ export async function updateDocument<
 }
 
 /**
+ * Deletes a specified document from Firestore.
+ *
+ * @param {FSDocument<D>} document - The document to be deleted, specified as an instance of FSDocument containing the necessary document data and metadata.
+ * @return {Promise<void>} - A promise that resolves once the document has been successfully deleted from Firestore.
+ */
+export async function deleteDocument<D extends IFSDocumentData>(
+  document: FSDocument<D>
+): Promise<void> {
+  // Create the document reference
+  const documentRef = fs.doc(fb.firebaseStore, document.path, document.id);
+  // Delete the document in Firestore
+  await fs.deleteDoc(documentRef);
+}
+
+/**
  * Loads a document from the specified path and returns it as an instance of FSDocument
  * or undefined if the document does not exist.
  *
