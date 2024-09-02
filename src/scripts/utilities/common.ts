@@ -1,10 +1,19 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { QTableColumn, useQuasar } from 'quasar';
+import { EventBus, QTableColumn, useQuasar } from 'quasar';
 import { useSessionStore } from 'stores/session-store';
 import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
 import { Timestamp } from 'firebase/firestore';
+import { inject } from 'vue';
+
+/**
+ * Represents the global events.
+ */
+export enum EGlobalEvent {
+  /** Project Event */
+  projectEvent = 'projectEvent',
+}
 
 /**
  * Represents the available modes for an editor.
@@ -96,6 +105,7 @@ export function useCommonComposables() {
     route: useRoute(),
     router: useRouter(),
     session: useSessionStore(),
+    bus: inject('bus') as EventBus,
   };
 }
 
@@ -109,11 +119,8 @@ export function useOpenEditor() {
   return async (
     scope: EFSDocumentType,
     mode: EEditorMode,
-    id: string,
-    resultHandler?: (result: any) => void
+    id: string
   ): Promise<void> => {
-    // Set result handler
-    cmp.session.resultHandler = resultHandler ? resultHandler : null;
     // Lock editor
     cmp.session.editorLock = true;
     // Route to the editor page
@@ -162,11 +169,13 @@ export function useRouteTo() {
 }
 
 /**
- * Returns a function that formats a given timestamp into a string based on the language preference of the current account.
+ * Returns a function that formats a given timestamp into a string based on the
+ * language preference of the current account.
  *
- * @return {function} A function that accepts a timestamp value and returns a formatted string representation of the timestamp.
+ * @return {function} A function that accepts a timestamp value and returns a
+ *                    formatted string representation of the timestamp.
  */
-export function useFormatTimestamp() {
+export function useFormatTimestamp(): (value: Timestamp | null) => string {
   // Get common composable
   const cmp = useCommonComposables();
   // Return format timestamp function

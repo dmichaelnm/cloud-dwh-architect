@@ -153,7 +153,12 @@ export async function createProject(
     attributes: attributes ? attributes : [],
   };
   // Create project document in firebase and return it
-  return await fs.createDocument<IProjectData, Project>('project', data);
+  const document = await fs.createDocument<IProjectData, Project>(
+    'project',
+    data
+  );
+  // Return project
+  return Project.create(document);
 }
 
 /**

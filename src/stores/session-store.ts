@@ -8,8 +8,6 @@ export const useSessionStore = defineStore('session', {
     account: null as Account | null,
     /** The list of projects of the current user */
     projects: [] as Project[],
-    /** Result handler function for routing results */
-    resultHandler: null as ((result: any) => void) | null,
     /** Flag for the editor lock */
     editorLock: false as boolean,
   }),
@@ -95,20 +93,6 @@ export const useSessionStore = defineStore('session', {
       if (index > -1) {
         this.projects.splice(index, 1);
       }
-    },
-    /**
-     * Invokes the result handler function with the given result.
-     *
-     * @param result - The result to be passed to the result handler.
-     */
-    invokeResultHandler(result: any): void {
-      // Check if result handler is specified
-      if (this.resultHandler !== null) {
-        // Invoke the result handler
-        this.resultHandler(result);
-        // Reset result handler
-        this.resultHandler = null;
-      }
-    },
+    }
   },
 });

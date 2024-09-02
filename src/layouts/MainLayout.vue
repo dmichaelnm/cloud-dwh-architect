@@ -28,15 +28,14 @@
           >
             <!-- Project Selection -->
             <project-selection
-              v-model="selectedProjectId"
+              :model-value="selectedProjectId"
               @update:model-value="switchProject"
               @project:overview="routeTo('/project/overview')"
               @project:create="
                 openEditor(
                   EFSDocumentType.project,
                   cm.EEditorMode.create,
-                  'new',
-                  (project) => (selectedProjectId = project.id)
+                  'new'
                 )
               "
             />
@@ -201,18 +200,18 @@
 
 <script setup lang="ts">
 import * as cm from 'src/scripts/utilities/common';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { onAccountStateChange } from 'src/scripts/application/Account';
 import { logout } from 'src/scripts/utilities/firebase';
-import { loadProjects } from 'src/scripts/application/Project';
+import { loadProjects, Project } from 'src/scripts/application/Project';
 import { useMessageDialog } from 'src/scripts/utilities/messageDialog';
 import { versionInfo } from 'src/scripts/config/version';
 import { languageOptions } from 'src/scripts/options/language';
+import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 import AppButton from 'components/common/AppButton.vue';
 import AppMenuItem from 'components/common/AppMenuItem.vue';
 import SocialMediaLinks from 'components/application/SocialMediaLinks.vue';
 import ProjectSelection from 'components/application/project/ProjectSelection.vue';
-import { EFSDocumentType } from 'src/scripts/application/FSDocument';
 import MessageDialog from 'components/application/MessageDialog.vue';
 
 // Get common composables
@@ -222,13 +221,33 @@ const openEditor = cm.useOpenEditor();
 // Get route to composable
 const routeTo = cm.useRouteTo();
 // Get message dialog options
-const { messageDialogOptions } = useMessageDialog();
+const { messageDialogOptions, showConfirmationDialog } = useMessageDialog();
 
 // Selected project ID
 const selectedProjectId = ref<string | null>(null);
 
 /** Lifecycle method that is called before this component is mounted */
 onBeforeMount(() => {
+  // Register event handler for project related events
+  cmp.bus.on(
+    cm.EGlobalEvent.projectEvent,
+    (mode: cm.EEditorMode, project: Project | null) => {
+      // Set selected project when created
+      if (mode === cm.EEditorMode.create && project) {
+        switchProject(project.id);
+      }
+      // Set selected project when actual project is deleted
+      if (
+        mode === cm.EEditorMode.delete &&
+        selectedProjectId.value === project?.id &&
+        cmp.session.projects.length > 0
+      ) {
+        // Set first project in list as new project
+        switchProject(cmp.session.projects[0].id);
+      }
+    }
+  );
+
   // Lock the screen
   cmp.quasar.loading.show();
   // Register the event listener for changes on the account state of the current user
@@ -257,6 +276,12 @@ onBeforeMount(() => {
       cmp.quasar.loading.hide();
     }
   });
+});
+
+/** Lifecycle method that is called before this component is unmounted */
+onBeforeUnmount(() => {
+  // Unregister events
+  cmp.bus.off(cm.EGlobalEvent.projectEvent);
 });
 
 /**
@@ -292,18 +317,46 @@ function switchLanguage(value: string): void {
   cmp.session.currentAccount.update();
 }
 
+/**
+ * Switches the currently active project to the specified project ID.
+ * If there are unsaved changes in the editor, a confirmation dialog will be shown to discard changes.
+ *
+ * @param {string|null} projectId - The ID of the project to switch to, or null to switch to the first available project.
+ * @return {Promise<void>} A promise that resolves when the project has been switched successfully.
+ */
 async function switchProject(projectId: string | null): Promise<void> {
-  // Get project for specified ID
-  let project = cmp.session.getProject(projectId);
-  if (project === null) {
-    // Project ID is unknown, take first project in list instead
-    project = cmp.session.projects.length > 0 ? cmp.session.projects[0] : null;
+  // Check editor lock
+  if (cmp.session.editorLock) {
+    // Show confirmation dialog
+    showConfirmationDialog(
+      cmp.i18n.t('dialog.discardChanges.title'),
+      cmp.i18n.t('dialog.discardChanges.message'),
+      null,
+      (confirmed) => {
+        if (confirmed) {
+          // Reset editor lock
+          cmp.session.editorLock = false;
+          // Call this method again
+          switchProject(projectId);
+        }
+      }
+    );
+  } else {
+    // Get project for specified ID
+    let project = cmp.session.getProject(projectId);
+    if (project === null) {
+      // Project ID is unknown, take first project in list instead
+      project =
+        cmp.session.projects.length > 0 ? cmp.session.projects[0] : null;
+    }
+    // Update active project on account
+    selectedProjectId.value = project !== null ? project.id : null;
+    const account = cmp.session.currentAccount;
+    account.data.state.activeProjectId = selectedProjectId.value;
+    await account.update();
+    // Reroute to main page
+    await routeTo('/');
   }
-  // Update active project on account
-  selectedProjectId.value = project !== null ? project.id : null;
-  const account = cmp.session.currentAccount;
-  account.data.state.activeProjectId = selectedProjectId.value;
-  await account.update();
 }
 
 /**

@@ -145,6 +145,8 @@ async function deleteProject(
   await pj.deleteProject(project);
   // Remove project from project list in session
   cmp.session.removeProject(project.id);
+  // Send global event
+  cmp.bus.emit(cm.EGlobalEvent.projectEvent, cm.EEditorMode.delete, project);
   // If no projects left, route to first project page
   if (cmp.session.projects.length === 0) {
     await routeTo('/project/first');

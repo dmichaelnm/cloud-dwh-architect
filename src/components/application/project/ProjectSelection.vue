@@ -14,7 +14,6 @@
         <!-- Project Overview -->
         <app-menu-item
           v-if="cmp.session.projects.length > 0"
-          class="project-action"
           clickable
           closeable
           icon="toc"
@@ -24,7 +23,6 @@
         />
         <!-- Create Project -->
         <app-menu-item
-          class="project-action"
           clickable
           closeable
           icon="add"
@@ -51,11 +49,6 @@
 
 <style lang="scss" scoped>
 @import 'src/css/quasar.variables';
-
-// Project Action
-.project-action {
-  font-style: italic;
-}
 
 // Project Button
 .project-button {

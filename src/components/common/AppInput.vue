@@ -16,6 +16,7 @@
     :rows="rows ? rows : 2"
     lazy-rules="ondemand"
     dense
+    :spellcheck="false"
     :outlined="!readOnly"
     :borderless="readOnly"
     :readonly="readOnly"

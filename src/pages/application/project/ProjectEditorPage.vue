@@ -155,7 +155,7 @@ async function submit(
   // Check editor mode
   if (mode === cm.EEditorMode.create) {
     // Create the project document
-    const project = await pj.createProject(
+    project = await pj.createProject(
       name,
       description,
       getProjectOwner(),
@@ -168,9 +168,9 @@ async function submit(
     // Update new project of current account
     cmp.session.currentAccount.data.state.activeProjectId = project.id;
     await cmp.session.currentAccount.update();
-    // Call result handler
-    cmp.session.invokeResultHandler(project);
-    // If this is the first project, redirect to main page
+    // Send global event
+    cmp.bus.emit(cm.EGlobalEvent.projectEvent, mode, project);
+    // If this is the first project, reroute to main page
     if (cmp.session.projects.length === 1) {
       return '/';
     }
@@ -185,6 +185,8 @@ async function submit(
       member.value.members,
       attributes.value
     );
+    // Send global event
+    cmp.bus.emit(cm.EGlobalEvent.projectEvent, mode, project);
   }
 }
 </script>
